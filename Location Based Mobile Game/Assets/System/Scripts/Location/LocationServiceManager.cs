@@ -1,15 +1,14 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class TestLocationService : MonoBehaviour
+public class LocationServiceManager : MonoBehaviour
 {
-    public bool hasSucceded = false;
     IEnumerator Start()
     {
         // First, check if user has location service enabled
-        
-        //if (!Input.location.isEnabledByUser)
-        //    yield break;
+        if (!Input.location.isEnabledByUser)
+            yield break;
 
         // Start service before querying location
         Input.location.Start();
@@ -44,4 +43,7 @@ public class TestLocationService : MonoBehaviour
         // Stop service if there is no need to query location updates continuously
         Input.location.Stop();
     }
+
 }
+
+// Source: https://docs.unity3d.com/ScriptReference/LocationService.Start.html
