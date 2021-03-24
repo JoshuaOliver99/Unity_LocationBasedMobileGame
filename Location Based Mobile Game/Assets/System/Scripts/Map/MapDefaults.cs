@@ -3,7 +3,7 @@ using Google.Maps.Feature.Style;
 using Google.Maps.Terrain;
 using UnityEngine;
 
-namespace Maps
+namespace Maps.Shared
 {
     /// <summary>
     /// Default values for use in Maps SDK for Unity example scenes.
