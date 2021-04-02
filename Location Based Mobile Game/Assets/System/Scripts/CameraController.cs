@@ -3,28 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Camera Controller to be attatched to the camera base GameObject.
+/// Camera Controller to be attatched to the camera base GameObject (Camera parent).
 /// </summary>
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] bool isClose; // If the camera is close (not map)
+    [SerializeField] bool SwitchingAllowed = true; // If camera can switch, true default
     [SerializeField] bool isRotating = false;
+    [SerializeField] bool isTargeting = true;
     [SerializeField] bool isFirstPerson = false;
     [SerializeField] bool isCrouched = false;
 
-    GameObject target;
-    GameObject cam;
-    [SerializeField] public GameObject playerModel;
+    [SerializeField] GameObject target;
+    [SerializeField] GameObject cam;
+    [SerializeField] GameObject playerModel;
 
     [SerializeField] int maxHeight = 10; 
     [SerializeField] int minHeight = 1;
-    [SerializeField] int rotateSpeed = 20;
+    [SerializeField] int rotateSpeed = 10;
     [SerializeField] int ySpeed = 10;
-    [SerializeField] bool isTargeting = true;
 
-    [SerializeField] public Vector3 camOffset = new Vector3(0, 5, 10);
-    [SerializeField] Vector3 standingHeight;
-    [SerializeField] Vector3 crouchedHeight;
+    [SerializeField] Vector3 camOffset = new Vector3(0, 5, 10);
+    [SerializeField] float standingHeight;
+    [SerializeField] float crouchedHeight;
+
 
     void Start()
     {
@@ -32,6 +33,9 @@ public class CameraController : MonoBehaviour
 
         cam = transform.GetChild(0).gameObject;
         cam.transform.position = camOffset;
+
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Map")
+            SwitchingAllowed = false;
     }
 
     void Update()
@@ -40,89 +44,91 @@ public class CameraController : MonoBehaviour
         if (isTargeting)
             cam.transform.LookAt(target.transform);
 
+        // Rotate
         if (isRotating)
             transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
 
-        // Switch view positon
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            switchView();
 
-            // Switch to another target
-            // E.g. a shop, a competition, or other neay-by point of interest
-        }
-        if (Input.GetKeyDown(KeyCode.R))
+
+
+        // Camera controls
+        if (isFirstPerson)
+            FirstPersonControls();
+        else
         {
-            isRotating = !isRotating; // Inverse rotating status
+            ThirdPersonControls();
+
+            // Toggle rotating
+            if (Input.GetKeyDown(KeyCode.R))
+                isRotating = !isRotating; // Inverse rotating status
         }
 
+        // Switch view mode
+        if (Input.GetKeyDown(KeyCode.Space) && SwitchingAllowed)
+            SwitchView();
+
+        // Switch crouched status
         if (isFirstPerson && Input.GetKeyDown(KeyCode.LeftControl))
         {
-            isCrouched = !isCrouched;
+            isCrouched = !isCrouched; // Switch crouched status
 
             if (isCrouched)
-                cam.transform.position = transform.position + crouchedHeight; // set the camera to the player crouched
+                cam.transform.position = transform.position + new Vector3(0, crouchedHeight, 0); // Set to Crouched height
             else
-                cam.transform.position = transform.position + standingHeight; // set the camera to the player 
-        }
-
-
-
-
-        // First person controls
-        if (isFirstPerson)
-        {
-            // Yaw rotation
-            if (Input.GetKey(KeyCode.A))
-                transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
-            else if (Input.GetKey(KeyCode.D))
-                transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
-            // Pitch rotation
-            else if (Input.GetKey(KeyCode.W))
-                transform.Rotate(new Vector3(rotateSpeed * Time.deltaTime, 0, 0));
-            else if (Input.GetKey(KeyCode.S))
-                transform.Rotate(new Vector3(-rotateSpeed * Time.deltaTime, 0, 0));
-        }
-        // Third person controls
-        else if (!isFirstPerson)
-        {
-            // Horizontal orbiting
-            if (Input.GetKey(KeyCode.A))
-                transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
-            else if (Input.GetKey(KeyCode.D))
-                transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
-
-            // Y movement
-            if (Input.GetKey(KeyCode.Q) && cam.transform.position.y > minHeight)
-                cam.transform.position += new Vector3(0, -ySpeed * Time.deltaTime, 0);
-            else if (Input.GetKey(KeyCode.E) && cam.transform.transform.position.y < maxHeight)
-                cam.transform.position += new Vector3(0, ySpeed * Time.deltaTime, 0);
+                cam.transform.position = transform.position + new Vector3(0, standingHeight, 0); // Set to standing height
         }
     }
 
-    void switchView()
+    void SwitchView()
     {
-        isFirstPerson = !isFirstPerson; // Inverse mode
-        isTargeting = !isTargeting;
+        isFirstPerson = !isFirstPerson; // Switch view mode
+        isTargeting = !isTargeting; // Start or stop targeting
+        isRotating = false; // Stop rotating
+        playerModel.SetActive(!isFirstPerson); // Deactivate or activate player model
+
 
         if (isFirstPerson)
-            enterFirstPerson();
+        {
+            isCrouched = false; // Not crouching
+
+            cam.transform.position = transform.position + new Vector3(0, standingHeight, 0); // Reset camera position
+            cam.transform.rotation = new Quaternion(); // Reset camera rotation
+        }
         else
-            enterThirdPerson();
+        {
+            transform.rotation = Quaternion.identity; // Reset the rotation
+            cam.transform.position = transform.position + camOffset; // Reset the camera offset
+        }
     }
 
-    void enterFirstPerson()
+    private void FirstPersonControls()
     {
-        playerModel.SetActive(false); // Disable the player model
-        isCrouched = false; // Not crouching
-        cam.transform.position = transform.position + standingHeight; // Set the camera to the player 
+        // Yaw rotation
+        if (Input.GetKey(KeyCode.A))
+            transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
+        else if (Input.GetKey(KeyCode.D))
+            transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
+
+        // Pitch rotation
+        if (Input.GetKey(KeyCode.W))
+            cam.transform.Rotate(new Vector3(-rotateSpeed * Time.deltaTime, 0, 0));
+        else if (Input.GetKey(KeyCode.S))
+            cam.transform.Rotate(new Vector3(rotateSpeed * Time.deltaTime, 0, 0));
     }
-    
-    void enterThirdPerson()
+
+    private void ThirdPersonControls()
     {
-        playerModel.SetActive(true); // Enable the player model
-        transform.rotation = Quaternion.identity; // Reset the rotation
-        cam.transform.position = camOffset; // Reset the camera offset
-        
+        // Horizontal orbiting
+        if (Input.GetKey(KeyCode.A))
+            transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
+        else if (Input.GetKey(KeyCode.D))
+            transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
+
+        // Y movement
+        if (Input.GetKey(KeyCode.S) && cam.transform.position.y > minHeight)
+            cam.transform.position += new Vector3(0, -ySpeed * Time.deltaTime, 0);
+        else if (Input.GetKey(KeyCode.W) && cam.transform.transform.position.y < maxHeight)
+            cam.transform.position += new Vector3(0, ySpeed * Time.deltaTime, 0);
     }
+
 }
