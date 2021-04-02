@@ -619,6 +619,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b735fdbbaf97904199fd9c897c7852b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SwitchingAllowed: 1
+  isRotating: 0
+  isFirstPerson: 0
+  isCrouched: 0
   playerModel: {fileID: 0}
   maxHeight: 150
   minHeight: 20
@@ -626,8 +630,8 @@ MonoBehaviour:
   ySpeed: 30
   isTargeting: 1
   camOffset: {x: 0, y: 5, z: 10}
-  eyeHeight: {x: 0, y: 0, z: 0}
-  CrouchedHeight: {x: 0, y: 0, z: 0}
+  standingHeight: {x: 0, y: 0, z: 0}
+  crouchedHeight: {x: 0, y: 0, z: 0}
 --- !u!1 &896188946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,6 +1688,34 @@ PrefabInstance:
     - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
       propertyPath: rotateSpeed
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: SwitchingAllowed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: crouchedHeight.x
+      value: 0.2325
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: crouchedHeight.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: crouchedHeight.z
+      value: 0.2325
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: standingHeight.x
+      value: 0.2325
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: standingHeight.y
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: standingHeight.z
+      value: 0.2325
       objectReference: {fileID: 0}
     - target: {fileID: 6030577946760194210, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
       propertyPath: movementSpeed

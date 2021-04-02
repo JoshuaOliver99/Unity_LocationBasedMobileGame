@@ -5,7 +5,6 @@ using Google.Maps.Coord;
 using Google.Maps.Event;
 using Maps.Shared;
 
-//namespace Google.Maps.Examples
 namespace Maps.Shared
 {
 
@@ -29,6 +28,11 @@ namespace Maps.Shared
     /// </summary>
     public class MapLoader : MonoBehaviour
     {
+        // TEST: convert LatLang
+        //Projection projection;
+
+
+
         [Tooltip("LatLng to load (must be set before hitting play).")]
         public LatLng LatLng = new LatLng(40.6892199, -74.044601);
 
@@ -99,7 +103,7 @@ namespace Maps.Shared
         void Start()
         {
             // TEST: set the latitude and longitude to the demo
-            LatLng =  new LatLng (gameObject.GetComponent<DemoLocation>().latitude, gameObject.GetComponent<DemoLocation>().longitude);
+            LatLng =  new LatLng (gameObject.GetComponent<LocationServiceManager>().latitude, gameObject.GetComponent<LocationServiceManager>().longitude);
 
             InitFloatingOrigin();
             InitStylingOptions();
@@ -112,6 +116,7 @@ namespace Maps.Shared
             {
                 LoadMap();
             }
+
         }
 
         void OnApplicationQuit()

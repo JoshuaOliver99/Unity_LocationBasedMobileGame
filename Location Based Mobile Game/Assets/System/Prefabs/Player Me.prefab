@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b735fdbbaf97904199fd9c897c7852b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SwitchingAllowed: 0
+  isRotating: 0
+  isFirstPerson: 0
+  isCrouched: 0
   playerModel: {fileID: 7292557797451570522}
   maxHeight: 10
   minHeight: 1
@@ -51,6 +55,8 @@ MonoBehaviour:
   ySpeed: 20
   isTargeting: 1
   camOffset: {x: 0, y: 3, z: 0.5}
+  standingHeight: {x: 0.2325, y: 1.8, z: 0.2325}
+  crouchedHeight: {x: 0.2325, y: 1, z: 0.2325}
 --- !u!1 &6030577946606170082
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2afd66f780db0eb4cbaba8fc3712d4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 1
+  movementSpeed: 5
 --- !u!1001 &6030577946335040373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,7 +215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7193265821434706719, guid: 150e1f41bb26aff41bf140620ee189cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.22325
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7193265821434706719, guid: 150e1f41bb26aff41bf140620ee189cb, type: 3}
       propertyPath: m_LocalPosition.y
