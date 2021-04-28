@@ -102,8 +102,8 @@ namespace Maps.Shared
         /// </summary>
         void Start()
         {
-            // TEST: set the latitude and longitude to the demo
-            LatLng =  new LatLng (gameObject.GetComponent<LocationServiceManager>().latitude, gameObject.GetComponent<LocationServiceManager>().longitude);
+            // Set the latitude and longitude to the demo
+            LatLng =  new LatLng (Input.location.lastData.latitude, Input.location.lastData.longitude);
 
             InitFloatingOrigin();
             InitStylingOptions();
