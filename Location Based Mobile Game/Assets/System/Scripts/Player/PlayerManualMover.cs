@@ -7,7 +7,6 @@ public class PlayerManualMover : MonoBehaviour
     [SerializeField] float movementSpeed;
     void Start()
     {
-
     }
 
     void Update()
@@ -28,5 +27,7 @@ public class PlayerManualMover : MonoBehaviour
         {
             transform.position += Vector3.right * movementSpeed * Time.deltaTime;
         }
+
+
     }
 }

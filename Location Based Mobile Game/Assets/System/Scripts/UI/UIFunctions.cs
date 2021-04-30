@@ -1,20 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public class UIFunctions : MonoBehaviour
+public class  UIFunctions : MonoBehaviour
 {
     // DEBUG
-    [SerializeField] private bool debugOn;
-    [SerializeField] private string debugHomeName;
+    [SerializeField] private bool UseManualHomeName;
+    [SerializeField] private string ManualHomeName;
 
     private string homeName;
 
     private void Start()
     {
-        if (debugOn)
+        if (UseManualHomeName)
         {
-            homeName = debugHomeName;
+            homeName = ManualHomeName;
+        }
+        else
+        {
+            // NOTE:
+            // Set homeName to the players current home name.
         }
     }
 
@@ -31,10 +33,11 @@ public class UIFunctions : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(homeName);
     }
 
-    public void btn_LoadInteraction()
+    public void Btn_LoadInteraction()
     {
         print("Interaction pressed");
         UnityEngine.SceneManagement.SceneManager.LoadScene("Interaction");
     }
     #endregion
 }
+

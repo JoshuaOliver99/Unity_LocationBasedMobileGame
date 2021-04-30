@@ -3,7 +3,6 @@ using Google.Maps;
 using UnityEngine.Events;
 using Google.Maps.Coord;
 using Google.Maps.Event;
-using Maps.Shared;
 
 namespace Maps.Shared
 {
@@ -28,8 +27,19 @@ namespace Maps.Shared
     /// </summary>
     public class MapLoader : MonoBehaviour
     {
-        // TEST: convert LatLang
-        //Projection projection;
+        #region TESTING
+        /// <summary>
+        /// DEBUG values used purely for testing.
+        /// </summary>
+        [Header("DEBUG"), Tooltip("Debug stats to use if location services not connected.")]
+        public bool DesktopDebug = false;
+        public double Latitude;
+        public double Longitue;
+
+        // NOTE:
+        // Testing class, ATM used for testing moving the character
+        [SerializeField] private Tester tester; // To hold the manual Lat and Long
+        #endregion
 
 
 
@@ -102,8 +112,18 @@ namespace Maps.Shared
         /// </summary>
         void Start()
         {
-            // Set the latitude and longitude to the demo
-            LatLng =  new LatLng (Input.location.lastData.latitude, Input.location.lastData.longitude);
+            #region TESTING
+            // Set the latitude and longitude
+            if (DesktopDebug)
+            {
+                Latitude = tester.Latitude;
+                Longitue = tester.Longitue;
+                LatLng = new LatLng(Latitude, Longitue); // DEBUG value for manual testing
+            }
+            else
+                LatLng =  new LatLng (Input.location.lastData.latitude, Input.location.lastData.longitude);
+            #endregion
+
 
             InitFloatingOrigin();
             InitStylingOptions();
@@ -116,7 +136,6 @@ namespace Maps.Shared
             {
                 LoadMap();
             }
-
         }
 
         void OnApplicationQuit()

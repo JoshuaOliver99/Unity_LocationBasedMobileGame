@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Interaction.unity
     guid: 2e45c4eed6ab3ad4f977ff291e8a0e3a
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: b970cd3a18a94a44caf567d209a77420
+  - enabled: 1
+    path: Assets/Scenes/Houses/Terraced.unity
+    guid: b05d0143c7d039a4f931861fa4bd1a08
   m_configObjects: {}

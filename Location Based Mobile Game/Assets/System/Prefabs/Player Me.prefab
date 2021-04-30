@@ -46,17 +46,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SwitchingAllowed: 0
   isRotating: 0
+  isTargeting: 1
   isFirstPerson: 0
   isCrouched: 0
+  target: {fileID: 0}
+  cam: {fileID: 0}
   playerModel: {fileID: 7292557797451570522}
   maxHeight: 10
   minHeight: 1
   rotateSpeed: 20
   ySpeed: 20
-  isTargeting: 1
   camOffset: {x: 0, y: 3, z: 0.5}
-  standingHeight: {x: 0.2325, y: 1.8, z: 0.2325}
-  crouchedHeight: {x: 0.2325, y: 1, z: 0.2325}
+  standingHeight: 0
+  crouchedHeight: 0
 --- !u!1 &6030577946606170082
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,24 +5,26 @@ using UnityEngine.UI;
 
 public static class LocationServiceManager
 {
-    // Bool flags
-    public static bool connecting = false;
+    public static bool Connecting = false; // Bool flag
+    public static string ConnectionStatus = "LocationService not called";
+
+    [SerializeField] private static float AccuracyInMeters = 5;
 
     public static IEnumerator ConnectLocationService()
     {
-        connecting = true;
-        Debug.Log("LocationSerivce not initialised");
+        ConnectionStatus = "LocationSerivce not initialised";
+        Connecting = true;
 
         // First, check if user has location service enabled
         if (!Input.location.isEnabledByUser) // Location not enabled
         {
-            Debug.LogError("LocationSerivce not enabled by user");
-            connecting = false;
+            ConnectionStatus = "LocationSerivce not enabled by user";
+            Connecting = false;
             yield break;
         }
 
         // Start service before querying location
-        Input.location.Start();
+        Input.location.Start(AccuracyInMeters);
 
         // Wait until service initializes
         int maxWait = 20;
@@ -35,23 +37,24 @@ public static class LocationServiceManager
         // Service didn't initialize in 20 seconds
         if (maxWait < 1)
         {
-            Debug.LogError("Location Service: Timed out");
-            connecting = false;
+            ConnectionStatus = "Location Service Timed out";
+            Connecting = false;
             yield break;
         }
 
         // Connection has failed
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            Debug.LogError("Location Service: Unable to determine device location");
-            connecting = false;
+            ConnectionStatus = "Location Service Unable to determine device location";
+            Connecting = false;
             yield break;
         }
         else
         {
             // Access granted and location value could be retrieved
-            Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            ConnectionStatus = "Location Service connected";
         }
+        Connecting = false;
     }
 
 }
