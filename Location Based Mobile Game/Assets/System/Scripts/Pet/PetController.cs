@@ -5,33 +5,66 @@ using UnityEngine.AI;
 
 public class PetController : MonoBehaviour
 {
-    // TESTING
-    [SerializeField] int timer = 5;
-    [SerializeField] float timePassed = 0;
+    // TESTING (everything needs access levels n such
+    [SerializeField] float timer = 0;
+    [SerializeField] float moveTimer = 5;
+    //[SerializeField] float timeLimit = 10;
+    [SerializeField] bool hasDestination = true;
 
-    [SerializeField] NavMeshAgent agent;
+    [SerializeField] float roamRange = 5; // detault value (probs change)
+    [SerializeField] float maxRoamRange;
+    
+    Vector3 petBase;
+    NavMeshAgent agent; // (Speed,
     [SerializeField] GameObject player;
 
     void Start()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        petBase = player.transform.position;
     }
 
     void Update()
     {
-        timePassed += Time.deltaTime;
+        if (!hasDestination)
+            timer += Time.deltaTime;
 
-        if (timePassed >= timer)
+
+        // Idle Roam (to random point within range from the pet)
+        if (timer >= moveTimer && !hasDestination)
         {
-            agent.SetDestination(transform.position + new Vector3(Random.Range(0, 5), 0, Random.Range(0, 5)));
-            timePassed = 0;
+            // Find potential new position
+            Vector3 newPos = (transform.position + new Vector3(Random.Range(0, roamRange), 0, Random.Range(0, roamRange)));
+
+            if (Vector3.Distance (newPos, petBase) < maxRoamRange) // If (newPos is within max range from the pet base)
+            {
+                agent.SetDestination(newPos); // Set the destination
+                hasDestination = true; // Not at destination
+            }
         }
 
+        TestAtDestination();
+
+        // PLAYER WHISTLE (SHOULD BE A PLAYER ACTION)
         if (Input.GetKeyDown(KeyCode.Z))
         {
             // Call all pets near
             agent.SetDestination(player.transform.position + new Vector3(Random.Range(0, 2), 0, Random.Range(0, 2)));
-            timePassed = 0;
+            hasDestination = true;
+        }
+
+        print(agent.pathStatus);
+    }
+
+    void TestAtDestination()
+    {
+        if (agent.pathStatus == NavMeshPathStatus.PathComplete && hasDestination)
+        {
+            hasDestination = false;
+            timer = 0; // Reset movement timer
         }
     }
+    
 }
