@@ -50,33 +50,39 @@ public class CameraController : MonoBehaviour
 
 
 
+        // Switch view mode
+        if (Input.GetKeyDown(KeyCode.Space) && SwitchingAllowed)
+            SwitchView();
 
         // Camera controls
+        // if (first person)
         if (isFirstPerson)
+        {
             FirstPersonControls();
+            //KeyboardFirstPersonControls();
+
+            // Toggle crouch
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                isCrouched = !isCrouched; // Switch crouched status
+
+                if (isCrouched)
+                    cam.transform.position = transform.position + new Vector3(0, crouchedHeight, 0); // Set to Crouched height
+                else
+                    cam.transform.position = transform.position + new Vector3(0, standingHeight, 0); // Set to standing height
+            }
+        }
+        // else (third person)
         else
         {
             ThirdPersonControls();
+            //KeyboardThirdPersonControls();
 
             // Toggle rotating
             if (Input.GetKeyDown(KeyCode.R))
                 isRotating = !isRotating; // Inverse rotating status
         }
 
-        // Switch view mode
-        if (Input.GetKeyDown(KeyCode.Space) && SwitchingAllowed)
-            SwitchView();
-
-        // Switch crouched status
-        if (isFirstPerson && Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            isCrouched = !isCrouched; // Switch crouched status
-
-            if (isCrouched)
-                cam.transform.position = transform.position + new Vector3(0, crouchedHeight, 0); // Set to Crouched height
-            else
-                cam.transform.position = transform.position + new Vector3(0, standingHeight, 0); // Set to standing height
-        }
     }
 
     void SwitchView()
@@ -101,34 +107,113 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void FirstPersonControls()
+    private void KeyboardFirstPersonControls()
     {
-        // Yaw rotation
+        // Yaw rotation (look left/right)
         if (Input.GetKey(KeyCode.A))
             transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
         else if (Input.GetKey(KeyCode.D))
             transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
 
-        // Pitch rotation
+        // Pitch rotation (look up/down)
         if (Input.GetKey(KeyCode.W))
             cam.transform.Rotate(new Vector3(-rotateSpeed * Time.deltaTime, 0, 0));
         else if (Input.GetKey(KeyCode.S))
             cam.transform.Rotate(new Vector3(rotateSpeed * Time.deltaTime, 0, 0));
     }
 
-    private void ThirdPersonControls()
+    private void KeyboardThirdPersonControls()
     {
-        // Horizontal orbiting
+        // Horizontal orbiting (orbit left/right)
         if (Input.GetKey(KeyCode.A))
             transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
         else if (Input.GetKey(KeyCode.D))
             transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
 
-        // Y movement
+        // Y movement (move up/down)
         if (Input.GetKey(KeyCode.S) && cam.transform.position.y > minHeight)
             cam.transform.position += new Vector3(0, -ySpeed * Time.deltaTime, 0);
         else if (Input.GetKey(KeyCode.W) && cam.transform.transform.position.y < maxHeight)
             cam.transform.position += new Vector3(0, ySpeed * Time.deltaTime, 0);
     }
 
+    private void FirstPersonControls()
+    {
+
+    }
+
+    private void ThirdPersonControls()
+    {
+        // NOTE:
+        // This is a crude implementation, done for leisure, drunk, in 20 min.
+        // This can (and likely should) be done a lot smoother.
+
+        Touch touch = Input.GetTouch(0);
+
+        int sensitivity = 10; // required deltaPosition before movement occurs (used to stop both axis moving at once)
+
+        // Initial movement test
+        #region TEST1
+        /*
+        if (touch.phase == TouchPhase.Moved)
+        {
+            // Horizontal orbiting (orbit left/right)
+            transform.Rotate(new Vector3(0, touch.deltaPosition.x, 0));
+
+            // Y movement (move up/down)
+            cam.transform.position += new Vector3(0, touch.deltaPosition.y, 0);
+        }
+        */
+        #endregion
+
+        // Sensitivity edit, movement on one axis only
+        #region TEST2
+        /*
+        if (touch.phase == TouchPhase.Moved)
+        {
+            // if (movement on the x axis)
+            if (touch.deltaPosition.x > sensitivity || touch.deltaPosition.x < -sensitivity)
+            {
+                // Horizontal orbiting (orbit left/right)
+                transform.Rotate(new Vector3(0, touch.deltaPosition.x, 0));
+            }
+            // else if (movement on the y axis)
+            else if (touch.deltaPosition.y > sensitivity || touch.deltaPosition.y < -sensitivity)
+            {
+                // Y movement (move up/down)
+                cam.transform.position += new Vector3(0, touch.deltaPosition.y, 0);
+            }
+        }
+        */
+        #endregion
+
+        // Added min and max y height
+        // ISSUES:
+        // - The camera could go below the floor
+        // - The camera is too hard to move, the user has to do big swipes
+        #region TEST3
+        if (touch.phase == TouchPhase.Moved)
+        {
+            // if (movement on the x axis)...
+            if (touch.deltaPosition.x > sensitivity || touch.deltaPosition.x < -sensitivity)
+            {
+                // Horizontal orbiting (orbit left/right)
+                transform.Rotate(new Vector3(0, touch.deltaPosition.x, 0));
+            }
+            // else if (movement on the y axis)...
+            else if (touch.deltaPosition.y > sensitivity || touch.deltaPosition.y < -sensitivity)
+            {
+                // Y movement (move up/down)
+                // if (y movement is negitive && cam position is more than min)...
+                if (touch.deltaPosition.y < 0 && cam.transform.position.y > minHeight)
+                    cam.transform.position += new Vector3(0, touch.deltaPosition.y, 0);
+                // if (y movement is posotive && cam position is less than max)...
+                else if (touch.deltaPosition.y > 0 && cam.transform.position.y < maxHeight)
+                    cam.transform.position += new Vector3(0, touch.deltaPosition.y, 0);
+            }
+        }
+        #endregion
+
+
+    }
 }

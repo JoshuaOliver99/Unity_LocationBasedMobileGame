@@ -272,7 +272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Avatar move test
+  m_Text: LBMG_TouchRotate.apk
 --- !u!222 &863383891
 CanvasRenderer:
   m_ObjectHideFlags: 0

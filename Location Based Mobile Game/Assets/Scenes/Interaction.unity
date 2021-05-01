@@ -1200,6 +1200,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1619124270}
     - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
+      propertyPath: minHeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030577945285076241, guid: 1541ac38167b3ea4289478e600fe4c82, type: 3}
       propertyPath: camOffset.z
       value: 4
       objectReference: {fileID: 0}
