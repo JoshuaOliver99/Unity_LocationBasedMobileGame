@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class PetData : MonoBehaviour
 {
+    //
+    public bool pet;
+
     // Stats
-    float mood;
-    float fun;
-    float hunger;
-    float thirst;
-    float tiredness;
-    float health;
+    public float mood; // NOTE: Maybe not a stat - dependant on stats and traits
+
+
+    public float health;
+    public float fun;
+
+    public float hunger;
+    public float thirst;
+
+    public float tiredness;
 
     // Traits
     // list of current traits
@@ -23,7 +30,7 @@ public class PetData : MonoBehaviour
         
     }
 
-    void Update()
+    void pUpdate()
     {
         
     }

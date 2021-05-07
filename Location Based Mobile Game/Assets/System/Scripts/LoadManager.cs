@@ -10,13 +10,20 @@ public class LoadManager : MonoBehaviour
 
     private bool connected = false;
 
-    private void Update()
+    private void Awake()
     {
-        // Test location service status, and act appropriately
-        QueryLocationStatus();
+        ManageIncorrectScene();
     }
 
-    private void QueryLocationStatus()
+    private void Update()
+    {
+        ManageLocationStatus();
+    }
+
+    /// <summary>
+    /// Test location service status, and act appropriately
+    /// </summary>
+    private void ManageLocationStatus()
     {
         // If (Location service is running)...
         if (Input.location.status == LocationServiceStatus.Running && !connected)
@@ -40,6 +47,22 @@ public class LoadManager : MonoBehaviour
         {
             connected = false;
         }
+    }
+
+    /// <summary>
+    /// Disables this component if on the incorrect scene
+    /// </summary>
+    private void ManageIncorrectScene()
+    {   
+        // Get the active scene
+        UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+
+        // IF (Map, Interaction or Loading scene is not active)...
+        if (scene.name == "Map" || scene.name == "Interaction" || scene.name == "Loading")
+        { }
+        else
+            gameObject.GetComponent<LoadManager>().enabled = false; // Disable this gameobject
+
     }
 
 }

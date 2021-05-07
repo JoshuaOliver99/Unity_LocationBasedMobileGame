@@ -272,7 +272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LBMG_TouchRotate.apk
+  m_Text: LBMG_UI1.apk
 --- !u!222 &863383891
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5485751160587714202}
+      - m_Target: {fileID: 2078978644}
         m_TargetAssemblyTypeName: UIFunctions, Assembly-CSharp
         m_MethodName: Btn_LoadInteraction
         m_Mode: 1
@@ -746,6 +746,7 @@ GameObject:
   - component: {fileID: 2078978642}
   - component: {fileID: 2078978641}
   - component: {fileID: 2078978640}
+  - component: {fileID: 2078978644}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -837,6 +838,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2078978644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078978639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f4e5f6561f56b4abc9599d58106259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseManualHomeName: 0
+  ManualHomeName: 
+  phone: {fileID: 0}
+  lerpPercent: 0
+  phoneSpeed: 0
 --- !u!1001 &5485751160587714199
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -906,14 +924,3 @@ PrefabInstance:
       objectReference: {fileID: 1459568781}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
---- !u!114 &5485751160587714202 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5485751160587714202, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
-  m_PrefabInstance: {fileID: 5485751160587714199}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84f4e5f6561f56b4abc9599d58106259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
