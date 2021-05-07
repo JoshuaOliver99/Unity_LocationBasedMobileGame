@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2696797099758736818}
   - component: {fileID: 2696797099758736819}
-  - component: {fileID: 2696797099758736816}
   - component: {fileID: 2696797099758736817}
+  - component: {fileID: 6142326271477894829}
   m_Layer: 0
   m_Name: Pet
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,22 +56,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2696797099758736816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2696797099758736820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fccf2310002a844dad8049a1f928643, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 5
-  timePassed: 0
-  agent: {fileID: 0}
-  player: {fileID: 0}
 --- !u!114 &2696797099758736817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +68,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa94e8b96701bce4a9c93b9d400398a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pet: 0
+  mood: 0
+  health: 0
+  fun: 0
+  hunger: 0
+  thirst: 0
+  tiredness: 0
+--- !u!114 &6142326271477894829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2696797099758736820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5467b9cd6c0dede47af364f23622914a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchor: {x: 0, y: 0, z: 0}
+  anchorRadius: 0
+  maxRoam: 0
+  action: 
+  timer: 0
+  maxIdle: 0
 --- !u!1 &2696797100419547316
 GameObject:
   m_ObjectHideFlags: 0
