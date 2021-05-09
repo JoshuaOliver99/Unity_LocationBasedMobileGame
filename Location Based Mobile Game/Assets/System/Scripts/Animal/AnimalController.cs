@@ -2,47 +2,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
 
 /// <summary>
 /// Controls the behaviour of an animal
 /// </summary>
 public class AnimalController : MonoBehaviour
 {
-    // References
-    private PetData petData;
-    private NavMeshAgent agent;
-    private GameObject player;
+    [Header("Data")]
+    string petID;
 
-    // Movement
-    [SerializeField] private Vector3 anchor; // A point the animal is centeral to
-    [SerializeField] private float anchorRadius;
-    [SerializeField] private float maxRoam;
+    [Header("References")]
+    [SerializeField] public AnimalSaveData_SO animalData; // Animal save data
 
-    // Action
-    [SerializeField] private string action; // holds current behaviour, "" for nothing
-    [SerializeField] private float timer;
-    [SerializeField] private float maxIdle; // Max time the animal will idle
+    [SerializeField] NavMeshAgent agent;
+    [SerializeField] GameObject player;
+
+    [Header("Movement")]
+    [SerializeField] Vector3 anchor; // A point the animal is centeral to
+    [SerializeField] float anchorRadius;
+    [SerializeField] float maxRoam;
+
+    [Header("Action")]
+    [SerializeField] string action; // holds current behaviour, "" for nothing
+    [SerializeField] float timer;
+    [SerializeField] float maxIdle; // Max time the animal will idle
 
 
     void Start()
     {
         // Testing values
         #region TEST
-        anchorRadius = 10; // UNUSED ATM
+        //anchorRadius = 10; // UNUSED ATM
         maxRoam = 5;
 
-        timer = 0;
-        maxIdle = 5;
+        //timer = 0;
+        //maxIdle = 5;
         #endregion
-
 
         Setup();
     }
 
+    private void Awake()
+    {
+        // NOTE: TESTING: testing to see if times seen increases and saves
+    }
+
+    bool updatedTimesSeen = false;
     void Update()
     {
+
+        // NOTE: TEST: to check if data persists on application restart
+        if (!updatedTimesSeen)
+        {
+            animalData.TimesSeen++;
+            updatedTimesSeen = true;
+        }
+
         Act();
     }
+
+
+    #region SETUP
+    private void Setup()
+    {
+        // Set data
+        petID = name;
+
+        // Assign references
+        agent = gameObject.GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        // NOTE: Editor only: //animalData = AssetDatabase.LoadAssetAtPath<AnimalSaveData_SO>("Assets/System/Data/Pets/" + petID + ".asset");
+        animalData = Resources.Load<AnimalSaveData_SO>("PetData/" + petID);
+    }
+    #endregion
+
+
+
 
 
     #region BEHAVIOUR
@@ -80,7 +116,7 @@ public class AnimalController : MonoBehaviour
     /// </summary>
     public void HearWhistle()
     {
-        if (petData.pet)
+        if (animalData.isPet)
         {
             // NOTE:
             // Include animal disobedience 
@@ -99,25 +135,11 @@ public class AnimalController : MonoBehaviour
     #endregion
 
 
-
-
-
-    #region TECHNICALs
+    #region TECHNICAL
     private void UpdateAnchor()
     {
-        if (petData.pet)
+        if (animalData.isPet)
             anchor = player.transform.position;
-    }
-    #endregion
-
-
-    #region SETUP
-    private void Setup()
-    {
-        // Assign references
-        petData = gameObject.GetComponent<PetData>();
-        agent = gameObject.GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player");
     }
     #endregion
 }

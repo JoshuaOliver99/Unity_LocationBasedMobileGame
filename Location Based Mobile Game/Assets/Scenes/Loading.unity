@@ -272,7 +272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LBMG_UI1.apk
+  m_Text: LBMG_Animal1.apk
 --- !u!222 &863383891
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -855,6 +855,8 @@ MonoBehaviour:
   phone: {fileID: 0}
   lerpPercent: 0
   phoneSpeed: 0
+  movingForward: 0
+  movingBack: 0
 --- !u!1001 &5485751160587714199
 PrefabInstance:
   m_ObjectHideFlags: 0

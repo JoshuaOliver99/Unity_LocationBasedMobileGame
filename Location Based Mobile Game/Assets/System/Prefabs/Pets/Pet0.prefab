@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2696797099758736819}
   - component: {fileID: 6142326271477894829}
   m_Layer: 0
-  m_Name: Pet
+  m_Name: Pet0
   m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

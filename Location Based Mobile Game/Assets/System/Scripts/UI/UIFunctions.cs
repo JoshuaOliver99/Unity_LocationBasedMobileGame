@@ -3,30 +3,27 @@ using UnityEngine.UI;
 public class  UIFunctions : MonoBehaviour
 {
     // DEBUG
-    [SerializeField] private bool UseManualHomeName;
-    [SerializeField] private string ManualHomeName;
+    [SerializeField] bool UseManualHomeName;
+    [SerializeField] string ManualHomeName;
 
     // Data
-    private string homeName; // The players home scene
+    string homeName; // The players home scene
 
     // References
-    private CameraController cameraController;
-    private PlayerActions playerActions;
+    CameraController cameraController;
+    PlayerActions playerActions;
     [SerializeField] private GameObject phone;
 
 
-    // TESTING
-    // Phone
-    private RectTransform phoneRectTransform;
-    private bool retrievingPhone = false;
-    [SerializeField] private float lerpPercent = 0;
-    [SerializeField] private float phoneSpeed;
+    [Header("Phone")]
+    RectTransform phoneRectTransform;
+    bool retrievingPhone = false;
+    float lerpPercent = 0;
+    float phoneSpeed;
 
-
-    // TESTING
-    // Movment
-    [SerializeField] private bool movingForward = false;
-    [SerializeField] private bool movingBack = false;
+    [Header("Movment")]
+    bool movingForward = false;
+    bool movingBack = false;
     
 
     private void Start()
@@ -51,21 +48,12 @@ public class  UIFunctions : MonoBehaviour
 
     private void Update()
     {
-        // ----- Moving the phone
-        if (retrievingPhone && lerpPercent < 1)
-        {
-            // Note: this needs clamping between 0 and 1 (well it doesnt because its normal lerp actually but ygm)
-            lerpPercent += Time.deltaTime * phoneSpeed;
-        }
-        else if (!retrievingPhone && lerpPercent > 0)
-        {
-            lerpPercent -= Time.deltaTime * phoneSpeed;
-        }
+        movePlayer();
+        updatePhonePos();
+    }
 
-        phoneRectTransform.localPosition = Vector3.Lerp(new Vector3(0, -1700, 0), new Vector3(0, -10, 0), lerpPercent);
-
-
-        // ----- Movement detection
+    void movePlayer()
+    {
         if (movingForward)
         {
             playerActions.MoveForward();
@@ -74,6 +62,27 @@ public class  UIFunctions : MonoBehaviour
         {
             playerActions.MoveBack();
         }
+    }
+
+    void updatePhonePos()
+    {
+        // Note:
+        // lerpPercent should be clamped (0, 1),
+        // but it still works because Lerp functions from 0 to 1
+
+        // if (retrieving the phone & lerpPercent is less than max)...
+        if (retrievingPhone && lerpPercent < 1)
+        {
+            lerpPercent += Time.deltaTime * phoneSpeed; // Increase lerpPercent
+        }
+        // if (not already retrieving the phone & lerpPercent is greater than min)...
+        else if (!retrievingPhone && lerpPercent > 0)
+        {
+            lerpPercent -= Time.deltaTime * phoneSpeed; // Decrease lerpPercent
+        }
+
+        // Lerp the phone position
+        phoneRectTransform.localPosition = Vector3.Lerp(new Vector3(0, -1700, 0), new Vector3(0, -10, 0), lerpPercent);
     }
 
 
@@ -93,6 +102,11 @@ public class  UIFunctions : MonoBehaviour
     public void Btn_LoadInteraction()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Interaction");
+    }
+
+    public void Btn_Quit()
+    {
+        Application.Quit();
     }
 
 
