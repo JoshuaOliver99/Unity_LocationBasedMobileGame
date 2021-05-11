@@ -23,41 +23,33 @@ public class AnimalController : MonoBehaviour
     [SerializeField] float anchorRadius;
     [SerializeField] float maxRoam;
 
+    [SerializeField] Vector3 newPos;
+
     [Header("Action")]
-    [SerializeField] string action; // holds current behaviour, "" for nothing
-    [SerializeField] float timer;
-    [SerializeField] float maxIdle; // Max time the animal will idle
+    // "Idle", "Roaming"
+    [SerializeField] string action;
+
+    [SerializeField] float idleTimer;
+
+    [SerializeField] float idleLimit; // Time limit the animal will idle
+    [SerializeField] float idleMax; // Max time the animal can idle
 
 
     void Start()
     {
-        // Testing values
-        #region TEST
-        //anchorRadius = 10; // UNUSED ATM
+        // Manual set data
+        // NOTE: These should be be computed
+        anchorRadius = 10;
         maxRoam = 5;
 
-        //timer = 0;
-        //maxIdle = 5;
-        #endregion
+        idleMax = 3; // (dependant on traits (e.g. lazy) and stats)
 
         Setup();
     }
 
-    private void Awake()
-    {
-        // NOTE: TESTING: testing to see if times seen increases and saves
-    }
-
-    bool updatedTimesSeen = false;
     void Update()
     {
-
-        // NOTE: TEST: to check if data persists on application restart
-        if (!updatedTimesSeen)
-        {
-            animalData.TimesSeen++;
-            updatedTimesSeen = true;
-        }
+        UpdateAnchor();
 
         Act();
     }
@@ -72,12 +64,18 @@ public class AnimalController : MonoBehaviour
         // Assign references
         agent = gameObject.GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
-        // NOTE: Editor only: //animalData = AssetDatabase.LoadAssetAtPath<AnimalSaveData_SO>("Assets/System/Data/Pets/" + petID + ".asset");
         animalData = Resources.Load<AnimalSaveData_SO>("PetData/" + petID);
+
+        // Error check references
+        if (agent == null)
+            Debug.LogError(name + " No NavMeshAgent referance");
+        if (player == null)
+            Debug.LogError(name + " No Player referance");
+        if (animalData == null)
+            Debug.LogError(name + " No AnimalSaveData_SO referance");
     }
     #endregion
-
-
+    
 
 
 
@@ -87,44 +85,104 @@ public class AnimalController : MonoBehaviour
         // Check stat,
         // see if everything is healthy (e.g in the green)
 
-
-
         // if not already acting,
 
+
+        // If (agent has no path & not already idle)...
+        if (!agent.hasPath && action != "Idle")
+        {
+            // Ensure no path is set
+            agent.ResetPath();
+
+            // Set a new idle time
+            idleLimit = Random.Range(0f, idleMax);
+
+            
+
+            // If (Animal out of anchorRadius)
+            if (Vector3.Distance(transform.position, anchor) > anchorRadius)
+            {
+                // Calculate how far OOB
+                float distanceOOB = Vector3.Distance(newPos, anchor) - Vector3.Distance(transform.position, anchor);
+
+                // Ensure the value is posotive
+                if (distanceOOB < 0)
+                    distanceOOB = -distanceOOB;
+
+                // Move back towards the anchor, the distance OOB plus half the anchor radius
+                agent.SetDestination(Vector3.MoveTowards(transform.position, anchor, distanceOOB + (anchorRadius / 2) ));
+            }
+            else
+            {
+                action = "Idle";
+            }
+        }
+
+        // If (Idle)...a
+        if (action == "Idle")
+        {
+            idleTimer += Time.deltaTime;
+
+            if (idleTimer > idleLimit)
+            {
+
+                if (!agent.hasPath)
+                { 
+                    LocalRoam();
+                    idleTimer = 0;
+                }
+            }
+        }
+
     }
 
-    private void MoveTo(Vector3 location, float speed)
-    {
-        
-    }
 
     /// <summary>
-    /// Begin moving to a random point within maxRoam range from the animal and within anchorRadius
+    /// Begin moving to a random point within maxRoam range from the animal
     /// </summary>
-    private void Roam()
+    private void LocalRoam()
     {
-        // NOTE:
-        // ERROR, this does not stay within anchorRadius 
+        action = "Roaming";
 
-        agent.SetDestination(
-            transform.position 
-            + new Vector3(Random.Range(-maxRoam, maxRoam), 0, Random.Range(-maxRoam, maxRoam)));
+        agent.SetDestination(transform.position + new Vector3(Random.Range(-maxRoam, maxRoam), 0, Random.Range(-maxRoam, maxRoam)));
+
+        // Get a new point nearby
+        //Vector3 newPos = transform.position + new Vector3(Random.Range(-maxRoam, maxRoam), 0, Random.Range(-maxRoam, maxRoam));
+        //
+        //// If (newPos is in anchorRadius)...
+        //if (Vector3.Distance(newPos, anchor) < anchorRadius)
+        //{
+        //
+        //    Debug.LogWarning(animalData.AnimalName + "position in bounds, Distance: " + Vector3.Distance(newPos, anchor));
+        //    agent.SetDestination(newPos);
+        //}
+        //else if (Vector3.Distance(newPos, anchor) > anchorRadius * 2)
+        //{
+        //    //Vector3.MoveTowards(transform.position, anchor, anchorRadius / 2);
+        //    Debug.LogWarning(animalData.AnimalName + "position far OOB, Distance: " + Vector3.Distance(newPos, anchor));
+        //}
+        //else
+        //{
+        //    Debug.LogWarning(animalData.AnimalName + "position OOB, Distance: " + Vector3.Distance(newPos, anchor));
+        //}
+
     }
+
 
     /// <summary>
     ///  An animals response to the player whistling
     /// </summary>
     public void HearWhistle()
     {
-        if (animalData.isPet)
+        action = "Heard Whistle";
+
+        if (animalData.IsPet)
         {
             // NOTE:
             // Include animal disobedience 
 
-            // Go to the player
-            agent.SetDestination(
-                player.transform.position
-                + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)));
+            // Go to nearby player
+            agent.SetDestination(player.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)));
         }
         else
         {
@@ -138,8 +196,8 @@ public class AnimalController : MonoBehaviour
     #region TECHNICAL
     private void UpdateAnchor()
     {
-        if (animalData.isPet)
-            anchor = player.transform.position;
+        if (animalData.IsPet)
+            anchor = player.transform.localPosition;
     }
     #endregion
 }

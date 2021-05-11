@@ -10,24 +10,26 @@ public class AnimalCanvasController : MonoBehaviour
 
     void Start()
     {
-        // NOTE: Providing this is still the rigt order
+        // NOTE: Rudimental, works providing this is order
         text = transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
     }
 
     void Update()
     {
         // NOTE: this is in update as (presumably) is is not set in time for start()
-        // Get animal data
+        // Get AnimalSaveData_SO referance
         if (animalData == null)
             animalData = transform.GetComponentInParent<AnimalController>().animalData;
 
-        // Update text
-        text.text = animalData.animalName + " Stats: " + '\n' +
-                    "health: " + animalData.health + '\n' +
-                    "fun: " + animalData.fun + '\n' +
-                    "hunger: " + animalData.hunger + '\n' +
-                    "thirst: " + animalData.thirst + '\n' +
-                    "tiredness: " + animalData.tiredness + '\n' +
-                    "Times Seen: " + animalData.TimesSeen;
+        // Display Animal stats
+        text.text = animalData.AnimalName + " Stats: " + '\n' +
+                    "health: " + animalData.Health + '\n' +
+                    "bond: " + animalData.Bond + '\n' +
+                    "fun: " + animalData.Fun + '\n' +
+                    "hunger: " + animalData.Hunger + '\n' +
+                    "thirst: " + animalData.Thirst + '\n' +
+                    "tiredness: " + animalData.Tiredness + '\n' +
+                    "filth: " + animalData.Filth;
+
     }
 }

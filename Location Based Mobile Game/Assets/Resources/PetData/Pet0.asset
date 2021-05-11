@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17664659bc8888e4e983d4a8995e4410, type: 3}
   m_Name: Pet0
   m_EditorClassIdentifier: 
-  TimesSeen: 5
-  animalName: Abe
-  isPet: 1
-  isCurrentPet: 0
-  health: 100
-  fun: 100
-  hunger: 0
-  thirst: 0
-  tiredness: 0
+  TimesSeen: 6
+  AnimalName: 
+  IsPet: 1
+  WasPet: 0
+  Health: 0
+  Bond: 0
+  Fun: 0
+  Hunger: 0
+  Thirst: 0
+  Filth: 0
+  Tiredness: 0
   key: Pet0

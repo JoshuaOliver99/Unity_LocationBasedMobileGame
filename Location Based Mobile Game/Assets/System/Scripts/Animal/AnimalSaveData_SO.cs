@@ -6,30 +6,29 @@ using UnityEngine;
 public class AnimalSaveData_SO : ScriptableObject
 {
     [Header("Persistance Data")]
-    // NOTE: TESTING: could be kept
-    [SerializeField] public int TimesSeen;
+    //public string FirstDateMet;
+    //public bool NeverSeen;
+    
+    public int TimesSeen;
 
     [Header("Info")]
-    [SerializeField] public string animalName;
-    [SerializeField] public bool isPet;
-    [SerializeField] public bool isCurrentPet;
+    public string AnimalName;
+    public bool IsPet;
+    public bool WasPet;
 
     [Header("Stats")]
-    [SerializeField] public int health;
-    [SerializeField] public int fun;
+    public int Health;
+    public int Bond;
+    public int Fun;
 
-    [SerializeField] public int hunger;
-    [SerializeField] public int thirst;
-    [SerializeField] public int tiredness;
+    public int Hunger;
+    public int Thirst;
+    public int Filth;
+    public int Tiredness;
 
     [Header("Traits")]
-
-
-    [Header("Skills")]
-
-    
+    [Header("Skills")]  
     [Header("Inventory")]
-
 
     [Header("Save Data")]
     [SerializeField] string key;
