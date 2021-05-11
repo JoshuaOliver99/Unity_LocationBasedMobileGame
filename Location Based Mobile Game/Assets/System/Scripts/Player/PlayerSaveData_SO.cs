@@ -64,22 +64,21 @@ public class PlayerSaveData_SO : ScriptableObject
     void LoadCurrentPets()
     {
         CurrentPets.Clear();
-        // foreach (animal)
+
+        // foreach (animal)...
         foreach (AnimalSaveData_SO animalSaveData in AllAnimals)
-        {
-            Debug.LogError(animalSaveData.AnimalName + "IsPet: " + animalSaveData.IsPet);
             if (animalSaveData.IsPet)
                 CurrentPets.Add(animalSaveData);
-        }
     }
     
     /// <summary>
-/// Loads previous pets
-/// </summary>
+    /// Loads previous pets
+    /// </summary>
     void LoadPrevousPets()
     {
         previousPets.Clear();
-        // foreach (animal)
+
+        // foreach (animal)...
         foreach (AnimalSaveData_SO animalSaveData in AllAnimals)
             if (animalSaveData.wasPet)
                 previousPets.Add(animalSaveData);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controls the behaviour of an animal
@@ -10,7 +11,8 @@ using UnityEditor;
 public class AnimalController : MonoBehaviour
 {
     [Header("Data")]
-    string petID;
+    [SerializeField] string ID;
+
 
     [Header("References")]
     [SerializeField] public AnimalSaveData_SO animalData; // Animal save data
@@ -20,8 +22,9 @@ public class AnimalController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] Vector3 anchor; // A point the animal is centeral to
-    [SerializeField] float anchorRadius;
-    [SerializeField] float maxRoam;
+    [SerializeField] float anchorRadius; // The radius of the anchor
+    bool FreeRoam; // If the animal can freeRoam the scene
+    [SerializeField] float maxRoam; // The max distance an animal can roam
 
     [SerializeField] Vector3 newPos;
 
@@ -41,16 +44,30 @@ public class AnimalController : MonoBehaviour
         // NOTE: These should be be computed
         anchorRadius = 10;
         maxRoam = 5;
-
         idleMax = 3; // (dependant on traits (e.g. lazy) and stats)
 
+
+
+
+
         Setup();
+
+        #region setFreeRoam
+
+        // Get the current scene
+        UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+
+        // if (the animal isn't a pet or the scene isn't "Loading", "map" or "Interaction"
+        if (!animalData.IsPet || scene.name == "Loading" || scene.name == "Map" || scene.name == "Interaction")
+            FreeRoam = false;
+        else
+            FreeRoam = true;
+        #endregion
     }
 
     void Update()
     {
         UpdateAnchor();
-
         Act();
     }
 
@@ -59,12 +76,12 @@ public class AnimalController : MonoBehaviour
     private void Setup()
     {
         // Set data
-        petID = name;
+        ID = name;
 
         // Assign references
         agent = gameObject.GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
-        animalData = Resources.Load<AnimalSaveData_SO>("PetData/" + petID);
+        animalData = Resources.Load<AnimalSaveData_SO>("PetData/" + ID);
 
         // Error check references
         if (agent == null)
@@ -88,8 +105,6 @@ public class AnimalController : MonoBehaviour
         // Check stat,
         // see if everything is healthy (e.g in the green)
 
-        // if not already acting,
-
 
         // If (agent has no path & not already idle)...
         if (!agent.hasPath && action != "Idle")
@@ -100,11 +115,11 @@ public class AnimalController : MonoBehaviour
             // Set a new idle time
             idleLimit = Random.Range(0f, idleMax);
 
-            
-
-            // If (Animal out of anchorRadius)
-            if (Vector3.Distance(transform.position, anchor) > anchorRadius)
+            // if (not FreeRoam && animal position if out of anchor radius)...
+            if(!FreeRoam && Vector3.Distance(transform.position, anchor) > anchorRadius)
             {
+                action = "Moving towards anchor";
+
                 // Calculate how far OOB
                 float distanceOOB = Vector3.Distance(newPos, anchor) - Vector3.Distance(transform.position, anchor);
 
@@ -113,15 +128,14 @@ public class AnimalController : MonoBehaviour
                     distanceOOB = -distanceOOB;
 
                 // Move back towards the anchor, the distance OOB plus half the anchor radius
-                agent.SetDestination(Vector3.MoveTowards(transform.position, anchor, distanceOOB + (anchorRadius / 2) ));
+                agent.SetDestination(Vector3.MoveTowards(transform.position, anchor, distanceOOB + (anchorRadius / 2)));
             }
             else
-            {
                 action = "Idle";
-            }
+
         }
 
-        // If (Idle)...a
+        // If (Idle)...
         if (action == "Idle")
         {
             idleTimer += Time.deltaTime;
@@ -148,27 +162,6 @@ public class AnimalController : MonoBehaviour
         action = "Roaming";
 
         agent.SetDestination(transform.position + new Vector3(Random.Range(-maxRoam, maxRoam), 0, Random.Range(-maxRoam, maxRoam)));
-
-        // Get a new point nearby
-        //Vector3 newPos = transform.position + new Vector3(Random.Range(-maxRoam, maxRoam), 0, Random.Range(-maxRoam, maxRoam));
-        //
-        //// If (newPos is in anchorRadius)...
-        //if (Vector3.Distance(newPos, anchor) < anchorRadius)
-        //{
-        //
-        //    Debug.LogWarning(animalData.AnimalName + "position in bounds, Distance: " + Vector3.Distance(newPos, anchor));
-        //    agent.SetDestination(newPos);
-        //}
-        //else if (Vector3.Distance(newPos, anchor) > anchorRadius * 2)
-        //{
-        //    //Vector3.MoveTowards(transform.position, anchor, anchorRadius / 2);
-        //    Debug.LogWarning(animalData.AnimalName + "position far OOB, Distance: " + Vector3.Distance(newPos, anchor));
-        //}
-        //else
-        //{
-        //    Debug.LogWarning(animalData.AnimalName + "position OOB, Distance: " + Vector3.Distance(newPos, anchor));
-        //}
-
     }
 
 
@@ -177,13 +170,14 @@ public class AnimalController : MonoBehaviour
     /// </summary>
     public void HearWhistle()
     {
-        action = "Heard Whistle";
+        action = "Heard whistle";
 
         if (animalData.IsPet)
         {
             // NOTE:
             // Include animal disobedience 
 
+            action = "Coming";
             // Go to nearby player
             agent.SetDestination(player.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)));
         }
