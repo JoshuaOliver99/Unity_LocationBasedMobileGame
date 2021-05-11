@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17664659bc8888e4e983d4a8995e4410, type: 3}
-  m_Name: Pet0
+  m_Name: Pet1
   m_EditorClassIdentifier: 
   TimesSeen: 6
-  AnimalName: CreatureA
+  AnimalName: CreatureB
   IsPet: 1
   wasPet: 0
   Health: 0
@@ -23,4 +23,4 @@ MonoBehaviour:
   Thirst: 0
   Filth: 0
   Tiredness: 0
-  key: Pet0
+  key: Pet1

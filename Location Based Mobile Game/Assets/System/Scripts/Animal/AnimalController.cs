@@ -73,6 +73,9 @@ public class AnimalController : MonoBehaviour
             Debug.LogError(name + " No Player referance");
         if (animalData == null)
             Debug.LogError(name + " No AnimalSaveData_SO referance");
+
+        // Set components
+        //transform.GetChild(0) // (Model GameObject)
     }
     #endregion
     

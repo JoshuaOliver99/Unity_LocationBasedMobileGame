@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1418236274860272450}
   - component: {fileID: 5485751160587714201}
   - component: {fileID: 2005245053}
+  - component: {fileID: 2536057226425340296}
   - component: {fileID: 711694499859019542}
   m_Layer: 0
   m_Name: Game Controller
@@ -45,8 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0bcaf4eae84954381f3c2742b67c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationServiceDependent:
-  - {fileID: 0}
+  locationServiceDependent: []
 --- !u!114 &2005245053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,6 +60,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapsService: {fileID: 0}
+--- !u!114 &2536057226425340296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418236274860272451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e9f9ab39533fc4588f85ef7f96a0f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  petPrefab: {fileID: 2696797099758736820, guid: 09c2d0b266737b241aaabf0a8daabd61, type: 3}
 --- !u!114 &711694499859019542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,3 +88,4 @@ MonoBehaviour:
   player: {fileID: 0}
   animals: []
   pets: []
+  speed: 0
