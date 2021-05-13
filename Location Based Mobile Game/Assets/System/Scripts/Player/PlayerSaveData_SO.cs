@@ -7,20 +7,57 @@ using UnityEngine;
 public class PlayerSaveData_SO : ScriptableObject
 {
     [Header("Data")]
-    // Date first played
-    // Date and Time last played
+    [SerializeField] bool isFirstPlay = true;
+    [SerializeField] string firstPlayed; // UNUSED Date first played
+    [SerializeField] string lastPlayed; // UNUSED Date last played
+
+    [Header("Property")]
+    public List<PropertySaveData_SO> Allproperty; // NOTE: UNUSED, To hold a list of all owend property scene names
+    public List<PropertySaveData_SO> OwnedProperty; // NOTE: UNUSED, To hold a list of all owend property scene names
 
     [Header("Inventory")]
+    [SerializeField] float balance; // NOTE: UNUSED
     // Inventory_SO playerInventory
-    // List<Inventory_SO> homeInventory
+    // List<Inventory_SO> propertyInventories
 
     [Header("Animals")]
-    [SerializeField] public List<AnimalSaveData_SO> AllAnimals; // to display each animals save data
-    [SerializeField] public List<AnimalSaveData_SO> CurrentPets;
-    [SerializeField] List<AnimalSaveData_SO> previousPets;
+    public List<AnimalSaveData_SO> AllAnimals; // to display each animals save data
+    public List<AnimalSaveData_SO> CurrentPets;
+    public List<AnimalSaveData_SO> previousPets;
 
     [Header("Save Data")]
     [SerializeField] string key;
+
+    void OnEnable()
+    {
+        JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(key), this);
+
+        
+        if (isFirstPlay)
+        {   
+            // Save the first time played
+            firstPlayed = System.DateTime.Now.ToString();
+            isFirstPlay = false;
+        }
+
+        LoadAnimals();
+        LoadProperty();
+    }
+
+    void OnDisable()
+    {
+        // Save the last time played
+        lastPlayed = System.DateTime.Now.ToString();
+
+        if (key == "")
+            key = name;
+
+        string jsonData = JsonUtility.ToJson(this, true);
+        PlayerPrefs.SetString(key, jsonData);
+        PlayerPrefs.Save();
+    }
+
+
 
     #region Loading
     public void LoadAnimals()
@@ -29,6 +66,37 @@ public class PlayerSaveData_SO : ScriptableObject
         LoadCurrentPets();
         LoadPrevousPets();
     }
+
+    public void LoadProperty()
+    {
+        LoadAllProperty();
+        LoadOwnedProperty();
+    }
+
+
+    // ----- Property
+    void LoadAllProperty()
+    {
+        Allproperty.Clear();
+
+        PropertySaveData_SO[] properties = Resources.LoadAll<PropertySaveData_SO>("PropertyData/");
+        // foreach (property in array)...
+        foreach (PropertySaveData_SO a in properties)
+            Allproperty.Add(a); // Load it.
+    }
+
+    void LoadOwnedProperty()
+    {
+        OwnedProperty.Clear();
+
+        // foreach (property)...
+        foreach (PropertySaveData_SO a in Allproperty)
+            if (a.isOwned)
+                OwnedProperty.Add(a);
+    }
+
+
+    // ----- Animals
 
     /// <summary>
     /// Reloads all animals, providing the naming convention is adhered to
@@ -85,23 +153,9 @@ public class PlayerSaveData_SO : ScriptableObject
     }
     #endregion
 
-    void OnEnable()
-    {
-        JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(key), this);
 
-        // Load Animal data
-        LoadAnimals();
-    }
-    #region Saving
 
-    void OnDisable()
-    {
-        if (key == "")
-            key = name;
+     
 
-        string jsonData = JsonUtility.ToJson(this, true);
-        PlayerPrefs.SetString(key, jsonData);
-        PlayerPrefs.Save();
-    }
-    #endregion Saving
+
 }

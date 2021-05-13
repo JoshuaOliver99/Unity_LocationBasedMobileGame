@@ -1,70 +1,76 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class  UIFunctions : MonoBehaviour
 {
-    // DEBUG
-    [SerializeField] bool UseManualHomeName;
-    [SerializeField] string ManualHomeName;
-
-    // Data
-    string homeName; // The players home scene
-
-    // References
+    [Header("References")]
     CameraController cameraController;
     PlayerActions playerActions;
-    [SerializeField] private GameObject phone;
+    PlayerSaveData_SO playerSaveData; // UNUSED ATM
 
+    [Header("Property")]
+    List<PropertySaveData_SO> property;
 
     [Header("Phone")]
+    [SerializeField] private GameObject phone;
     RectTransform phoneRectTransform;
     bool retrievingPhone = false;
     float lerpPercent = 0;
-    float phoneSpeed;
+    [SerializeField] float phoneSpeed;
+    [SerializeField] Vector3 phoneDownPos = new Vector3(0, -1700, 0);
 
     [Header("Movment")]
     bool movingForward = false;
     bool movingBack = false;
     
 
-    private void Start()
+    void Start()
     {
-        if (UseManualHomeName)
-        {
-            homeName = ManualHomeName;
-        }
-        else
-        {
-            // NOTE:
-            // Set homeName to the players current home name.
-        }
+        GetReferences();
+        SetData();
+        ErrorHandling();
+    }
 
-        // Get refernces
+    #region SETUP
+    void GetReferences()
+    {
         cameraController = GameObject.FindGameObjectWithTag("MainCamera").transform.GetComponentInParent<CameraController>();
         playerActions = GameObject.FindGameObjectWithTag("GameController").transform.GetComponentInParent<PlayerActions>();
-
-        // Phone rect transform
+        playerSaveData = Resources.Load<PlayerSaveData_SO>("PlayerData/Player");
         phoneRectTransform = phone.GetComponent<RectTransform>();
+        property = playerSaveData.OwnedProperty;
     }
 
-    private void Update()
+    void ErrorHandling()
     {
-        movePlayer();
-        updatePhonePos();
+        if (phone == null)
+            Debug.LogWarning(name + ": UIFuncations.cs: assigned phone can't be null");
+        if (phoneSpeed <= 0)
+            Debug.LogWarning(name + ": UIFuncations.cs: assigned phoneSpeed can't <= 0");
     }
 
-    void movePlayer()
+    void SetData()
+    {
+
+    }
+    #endregion
+
+
+    void Update()
+    {
+        MovePlayer();
+        UpdatePhonePos();
+    }
+
+    void MovePlayer()
     {
         if (movingForward)
-        {
             playerActions.MoveForward();
-        }
         else if (movingBack)
-        {
             playerActions.MoveBack();
-        }
     }
 
-    void updatePhonePos()
+    void UpdatePhonePos()
     {
         // Note:
         // lerpPercent should be clamped (0, 1),
@@ -72,17 +78,13 @@ public class  UIFunctions : MonoBehaviour
 
         // if (retrieving the phone & lerpPercent is less than max)...
         if (retrievingPhone && lerpPercent < 1)
-        {
-            lerpPercent += Time.deltaTime * phoneSpeed; // Increase lerpPercent
-        }
+            lerpPercent += Time.deltaTime * phoneSpeed;
         // if (not already retrieving the phone & lerpPercent is greater than min)...
         else if (!retrievingPhone && lerpPercent > 0)
-        {
-            lerpPercent -= Time.deltaTime * phoneSpeed; // Decrease lerpPercent
-        }
+            lerpPercent -= Time.deltaTime * phoneSpeed;
 
         // Lerp the phone position
-        phoneRectTransform.localPosition = Vector3.Lerp(new Vector3(0, -1700, 0), new Vector3(0, -10, 0), lerpPercent);
+        phoneRectTransform.localPosition = Vector3.Lerp(phoneDownPos, Vector3.zero, lerpPercent);
     }
 
 
@@ -94,9 +96,20 @@ public class  UIFunctions : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Map");
     }
 
-    public void Btn_LoadHome()
+    public void Btn_LoadProperty()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(homeName);
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(homeName);
+
+        //double lat = Input.location.lastData.latitude;
+        //double lng = Input.location.lastData.longitude;
+
+
+        // NOTE:
+        // Needs changing so that the 
+
+        // if (in range of > 0 property)...
+            // show the list of property in range
+            // along with enter property buttons
     }
 
     public void Btn_LoadInteraction()
@@ -109,13 +122,13 @@ public class  UIFunctions : MonoBehaviour
         Application.Quit();
     }
 
-
+    // Camera
     public void Btn_SwitchView()
     {
         cameraController.SwitchView();
     }
 
-
+    // Movemnt
     public void Btn_SetMoveForward()
     {
         movingForward = true;    
@@ -134,7 +147,7 @@ public class  UIFunctions : MonoBehaviour
         movingBack = false;
     }
 
-
+    // Phone
     public void Btn_ShowPhone()
     {
         retrievingPhone = true;
@@ -144,7 +157,7 @@ public class  UIFunctions : MonoBehaviour
         retrievingPhone = false;
     }
 
-
+    // Player actions
     public void Btn_ShowActions()
     {
         // Shows or hides list of action buttons

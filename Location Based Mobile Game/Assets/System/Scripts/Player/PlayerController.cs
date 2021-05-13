@@ -15,13 +15,15 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        setup();
+        Setup();
 
         playerSaveData.LoadAnimals();
-        spawnCurrentPets();
+        SpawnCurrentPets();
+
+        playerSaveData.LoadProperty();
     }
 
-    void setup()
+    void Setup()
     {
         // Assign References
         playerSaveData = Resources.Load<PlayerSaveData_SO>("PlayerData/Player");
@@ -30,17 +32,14 @@ public class PlayerController : MonoBehaviour
 
 
 
-    void Update()
-    {
-        
-    }
 
-    void spawnCurrentPets()
+
+    void SpawnCurrentPets()
     {
         // foreach (current pet)
         foreach (AnimalSaveData_SO animalData in playerSaveData.CurrentPets)
         {
-            // Spawn it, set its data, set its name
+            // Spawn, set data, set name
             GameObject pet = Instantiate(petPrefab, player.transform.position, Quaternion.identity);
             pet.GetComponent<AnimalController>().animalData = animalData;
             pet.name = animalData.name;

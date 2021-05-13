@@ -607,7 +607,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84458
+  m_Name: pb_Mesh-1224
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -940,6 +940,10 @@ PrefabInstance:
       propertyPath: MapsService
       value: 
       objectReference: {fileID: 1136394099}
+    - target: {fileID: 711694499859019542, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
+      propertyPath: moveSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1418236274860272450, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -989,6 +993,10 @@ PrefabInstance:
       value: GameController
       objectReference: {fileID: 0}
     - target: {fileID: 5485751160587714201, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
+      propertyPath: locationServiceDependent.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5485751160587714201, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
       propertyPath: locationServiceDependent.Array.data[0]
       value: 
       objectReference: {fileID: 2133105980}
@@ -1025,9 +1033,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f4e5f6561f56b4abc9599d58106259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseManualHomeName: 1
-  ManualHomeName: Terraced
   phone: {fileID: 7838733700682094501}
+  phoneSpeed: 3.5
 --- !u!114 &3635629643379729515
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -44,21 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b735fdbbaf97904199fd9c897c7852b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SwitchingAllowed: 1
-  isRotating: 0
-  isTargeting: 1
-  isFirstPerson: 0
-  isCrouched: 0
   target: {fileID: 0}
   cam: {fileID: 0}
   playerModel: {fileID: 7292557797451570522}
-  maxHeight: 10
-  minHeight: 1
-  rotateSpeed: 40
-  ySpeed: 20
+  SwitchingAllowed: 1
+  KeyboardRotateSpeed: 5
+  KeyboardYSpeed: 1
+  TouchRotateSpeed: 0.2
+  TouchYSpeed: 0.2
   camOffset: {x: 0, y: 3, z: 5}
   standingHeight: 1.8
   crouchedHeight: 0.9
+  maxHeight: 10
+  minHeight: 1
 --- !u!1 &6030577946606170082
 GameObject:
   m_ObjectHideFlags: 0

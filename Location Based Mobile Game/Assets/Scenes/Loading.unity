@@ -272,7 +272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LBMG_Animal1.apk
+  m_Text: LBMG_AnimalRoaming.apk
 --- !u!222 &863383891
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -853,10 +853,6 @@ MonoBehaviour:
   UseManualHomeName: 0
   ManualHomeName: 
   phone: {fileID: 0}
-  lerpPercent: 0
-  phoneSpeed: 0
-  movingForward: 0
-  movingBack: 0
 --- !u!1001 &5485751160587714199
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -919,6 +915,10 @@ PrefabInstance:
     - target: {fileID: 1418236274860272451, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
       propertyPath: m_Name
       value: GameController
+      objectReference: {fileID: 0}
+    - target: {fileID: 5485751160587714201, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
+      propertyPath: locationServiceDependent.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5485751160587714201, guid: ab82c135ac3ef934a98aaaa31c7a1812, type: 3}
       propertyPath: locationServiceDependent.Array.data[0]
