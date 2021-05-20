@@ -4,27 +4,27 @@ using Google.Maps.Coord;
 
 public class PlayerGPSMover : MonoBehaviour
 {
-    // Movement
-    private float Speed; // Player speed m/s
-    private float WalkingSpeed = 2; // (x m/s movement speed)
-    private float RunningSpeed = 5; // (x m/s movement speed)
-    private float RunDistnace = 5; // Run at x meter
-    private float TeleportDistance = 50; // Teleport at x meter
+    [Header("Movement")]
+    float Speed; // Player speed m/s
+    float WalkingSpeed = 2; // (x m/s movement speed)
+    float RunningSpeed = 5; // (x m/s movement speed)
+    float RunDistnace = 5; // Run at x meter
+    float TeleportDistance = 50; // Teleport at x meter
 
-    // Location
-    private LatLng LatLng;
-    private float distanceFromGPS;
+    [Header("Location")]
+    LatLng LatLng;
+    float distanceFromGPS;
 
-    // Links
+    [Header("References")]
     [SerializeField] private MapsService MapsService;
-    private GameObject player;
+    GameObject player;
 
-    private void Awake()
+    void Awake()
     {
         ManageIncorrectScene();
     }
 
-    private void Start()
+    void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -35,7 +35,7 @@ public class PlayerGPSMover : MonoBehaviour
             Debug.LogWarning("PlayerGPSMover.cs: MapsService not set!");
     }
 
-    private void Update()
+    void Update()
     {
         // Retrieve current location
         LatLng = new LatLng(Input.location.lastData.latitude, Input.location.lastData.longitude);
@@ -50,7 +50,7 @@ public class PlayerGPSMover : MonoBehaviour
         player.transform.position = Vector3.MoveTowards(player.transform.position, MapsService.Projection.FromLatLngToVector3(LatLng), Speed * Time.deltaTime); // NOTE: This was causing distant telepoting on mobile, but always seemed to return to actual position
     }
 
-    private void SetMovementType()
+    void SetMovementType()
     {
         // if (in walking distance)...
         if (distanceFromGPS < RunDistnace)

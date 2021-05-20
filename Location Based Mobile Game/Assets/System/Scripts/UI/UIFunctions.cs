@@ -1,15 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Google.Maps;
+using Google.Maps.Coord;
+
 public class  UIFunctions : MonoBehaviour
 {
     [Header("References")]
+    PlayerSaveData_SO playerSaveData;
     CameraController cameraController;
     PlayerActions playerActions;
-    PlayerSaveData_SO playerSaveData; // UNUSED ATM
+    [SerializeField] private MapsService MapsService;
+
 
     [Header("Property")]
     List<PropertySaveData_SO> property;
+
+    // Test
+    // List of inrange property
+    List<PropertySaveData_SO> propertyInRange;
+
 
     [Header("Phone")]
     [SerializeField] private GameObject phone;
@@ -18,6 +28,9 @@ public class  UIFunctions : MonoBehaviour
     float lerpPercent = 0;
     [SerializeField] float phoneSpeed;
     [SerializeField] Vector3 phoneDownPos = new Vector3(0, -1700, 0);
+
+    GameObject homeScreen;
+    GameObject activeSceen;
 
     [Header("Movment")]
     bool movingForward = false;
@@ -36,9 +49,13 @@ public class  UIFunctions : MonoBehaviour
     {
         cameraController = GameObject.FindGameObjectWithTag("MainCamera").transform.GetComponentInParent<CameraController>();
         playerActions = GameObject.FindGameObjectWithTag("GameController").transform.GetComponentInParent<PlayerActions>();
+
         playerSaveData = Resources.Load<PlayerSaveData_SO>("PlayerData/Player");
-        phoneRectTransform = phone.GetComponent<RectTransform>();
         property = playerSaveData.OwnedProperty;
+
+        // Phone
+        phoneRectTransform = phone.GetComponent<RectTransform>();
+        homeScreen = phone.transform.Find("HomeScreen").gameObject;
     }
 
     void ErrorHandling()
@@ -98,18 +115,45 @@ public class  UIFunctions : MonoBehaviour
 
     public void Btn_LoadProperty()
     {
+        propertyInRange.Clear();
+
+        // Players position
+        LatLng playerLatLng = new LatLng(Input.location.lastData.latitude, Input.location.lastData.longitude);
+
+        foreach (PropertySaveData_SO property in playerSaveData.OwnedProperty)
+        {
+            // Property positon
+            LatLng propertyLatLng = new LatLng(property.Latitude, property.longitude);
+
+            // Calculate the distance
+            Vector3 playerPos = new Vector3(MapsService.Projection.FromLatLngToVector3(playerLatLng).x, 0, MapsService.Projection.FromLatLngToVector3(playerLatLng).z);
+            Vector3 propertyPos = new Vector3(MapsService.Projection.FromLatLngToVector3(propertyLatLng).x, 0, MapsService.Projection.FromLatLngToVector3(propertyLatLng).z);
+
+            float GPSDistanceFromProperty = Vector3.Distance(playerPos, propertyPos);
+
+            // Calculate if it's in range
+            // NOTE: 20f should be changed
+            if (GPSDistanceFromProperty < 20f)
+            {
+                propertyInRange.Add(property);
+                Debug.LogError(property.name + " in range!");
+            }
+        }
+
+        // TESTING
+        // if (one property)...
+        if(propertyInRange.Count == 1)
+        {
+            // Load that property
+            UnityEngine.SceneManagement.SceneManager.LoadScene(propertyInRange[0].SceneName);
+        }
+
+
+        // ----- OLD -----
         //UnityEngine.SceneManagement.SceneManager.LoadScene(homeName);
 
         //double lat = Input.location.lastData.latitude;
         //double lng = Input.location.lastData.longitude;
-
-
-        // NOTE:
-        // Needs changing so that the 
-
-        // if (in range of > 0 property)...
-            // show the list of property in range
-            // along with enter property buttons
     }
 
     public void Btn_LoadInteraction()
@@ -155,6 +199,19 @@ public class  UIFunctions : MonoBehaviour
     public void Btn_HidePhone()
     {
         retrievingPhone = false;
+    }
+
+    public void Btn_ShowScreen(GameObject screen)
+    {
+        activeSceen = screen;
+        activeSceen.SetActive(true);
+        homeScreen.SetActive(false);
+    }
+
+    public void Btn_GoHomeScreen()
+    {
+        activeSceen.SetActive(false);
+        homeScreen.SetActive(true);
     }
 
     // Player actions

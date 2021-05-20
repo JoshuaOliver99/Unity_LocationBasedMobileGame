@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15772cb3cee3e794295e1a387a0da813, type: 3}
   m_Name: Terraced
   m_EditorClassIdentifier: 
-  propertyName: 
-  sceneName: Terraced
-  isOwned: 1
+  PropertyName: Test House
+  SceneName: Terraced
+  IsOwned: 1
   previouslyOwned: 0
   purchasePrice: 0
   sellPrice: 0
-  latitude: 0
+  Latitude: 0
   longitude: 0
   key: Terraced

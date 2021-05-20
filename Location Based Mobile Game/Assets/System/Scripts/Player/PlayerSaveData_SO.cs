@@ -91,7 +91,7 @@ public class PlayerSaveData_SO : ScriptableObject
 
         // foreach (property)...
         foreach (PropertySaveData_SO a in Allproperty)
-            if (a.isOwned)
+            if (a.IsOwned)
                 OwnedProperty.Add(a);
     }
 
@@ -133,7 +133,7 @@ public class PlayerSaveData_SO : ScriptableObject
     {
         CurrentPets.Clear();
 
-        // foreach (animal)...
+        // foreach (animal, if (it's a pet))...
         foreach (AnimalSaveData_SO animalSaveData in AllAnimals)
             if (animalSaveData.IsPet)
                 CurrentPets.Add(animalSaveData);

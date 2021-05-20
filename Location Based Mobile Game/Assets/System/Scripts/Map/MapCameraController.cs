@@ -31,6 +31,8 @@ public class MapCameraController : MonoBehaviour
     {
         moveSpeed = 0.2f;
     }
+
+
     #endregion
     void Update()
     {

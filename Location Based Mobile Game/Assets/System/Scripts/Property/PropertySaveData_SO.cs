@@ -6,22 +6,23 @@ using UnityEngine;
 
 public class PropertySaveData_SO : ScriptableObject
 {
-    // data
-    [SerializeField] string propertyName;
-    [SerializeField] string sceneName;
+    [Header("Data")]
+    public string PropertyName;
+    public string SceneName;
 
-    [SerializeField] public bool isOwned;
+    public bool IsOwned;
     [SerializeField] bool previouslyOwned;
 
     [SerializeField] float purchasePrice;
     [SerializeField] float sellPrice;
 
+    //[Header("Inventory")]
     // Inventory_SO inventory;
+    // Inventory_SO deployedItems;
 
-    // location
-    [SerializeField] double latitude;
-    [SerializeField] double longitude;
-
+    [Header("Location")]
+    public double Latitude;
+    public double longitude;
 
     [Header("Save Data")]
     [SerializeField] string key;

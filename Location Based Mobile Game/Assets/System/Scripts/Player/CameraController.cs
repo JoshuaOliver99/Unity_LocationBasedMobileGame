@@ -47,8 +47,11 @@ public class CameraController : MonoBehaviour
             SwitchingAllowed = false;
 
         // TESTING TO MOVE GAMEOBJECT
-        gameObject.transform.SetParent(transform.parent.parent);
+        //gameObject.transform.SetParent(transform.parent.parent);
     }
+
+
+
 
     void Update()
     {
@@ -127,7 +130,7 @@ public class CameraController : MonoBehaviour
 
     private void TouchFirstPersonControls()
     {
-        if (Input.GetTouch(0).phase == TouchPhase.Moved)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             // Horizontal orbiting (orbit left/right)
             transform.Rotate(new Vector3(0, Input.GetTouch(0).deltaPosition.x, 0) * TouchRotateSpeed);
@@ -206,7 +209,7 @@ public class CameraController : MonoBehaviour
         #endregion
 
 
-        if (Input.GetTouch(0).phase == TouchPhase.Moved)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             transform.Rotate(new Vector3(0, Input.GetTouch(0).deltaPosition.x, 0) * TouchRotateSpeed);
 
