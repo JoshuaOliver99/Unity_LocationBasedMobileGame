@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Property Save Data", menuName = "Property/Data", order = 1)]
-
 public class PropertySaveData_SO : ScriptableObject
 {
     [Header("Data")]
-    public string PropertyName;
     public string SceneName;
+    public string PropertyName;
 
+    // Ownership
     public bool IsOwned;
     [SerializeField] bool previouslyOwned;
 
+    // Value
     [SerializeField] float purchasePrice;
     [SerializeField] float sellPrice;
 
+    // NOTE: For intended inventory class
     //[Header("Inventory")]
     // Inventory_SO inventory;
     // Inventory_SO deployedItems;
@@ -23,6 +25,7 @@ public class PropertySaveData_SO : ScriptableObject
     [Header("Location")]
     public double Latitude;
     public double longitude;
+    public int RemainingMoves;
 
     [Header("Save Data")]
     [SerializeField] string key;

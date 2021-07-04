@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Google.Maps;
 using Google.Maps.Coord;
 
+
 public class ShowProperty : MonoBehaviour
 {
     [Header("References")]
@@ -26,7 +27,7 @@ public class ShowProperty : MonoBehaviour
             newPropertyPanel.transform.Find("SceneName").GetComponent<TextMeshProUGUI>().text = property.SceneName;
             newPropertyPanel.transform.Find("PropertyName").GetComponent<TextMeshProUGUI>().text = property.PropertyName;
 
-            // Add Button functions
+            // Add Button functions (listeners)
             newPropertyPanel.transform.Find("Btn_See").GetComponent<Button>().onClick.AddListener(Btn_SeeLocation);
             newPropertyPanel.transform.Find("Btn_SetNew").GetComponent<Button>().onClick.AddListener(Btn_SetNewLocation);
 
@@ -34,11 +35,6 @@ public class ShowProperty : MonoBehaviour
             newPropertyPanel.transform.SetParent(transform);
             newPropertyPanel.transform.localPosition = transform.localPosition;
         }
-    }
-
-    void Update()
-    {
-       
     }
 
     void Btn_SeeLocation()
@@ -64,7 +60,6 @@ public class ShowProperty : MonoBehaviour
 
         // display the selected location in text
         // display the selected location in the world
-
     }
 
 }
