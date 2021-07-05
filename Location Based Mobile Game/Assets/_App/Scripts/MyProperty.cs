@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI functionality for the MyProperty phone app
+/// </summary>
 public class MyProperty : MonoBehaviour
 {
     [Header("References")]
@@ -12,7 +15,7 @@ public class MyProperty : MonoBehaviour
 
     void Start()
     {
-        // Assign References
+        // Get References
         playerSaveData = Resources.Load<PlayerSaveData_SO>("PlayerData/Player");
 
         // foreach (owned property, spawn a property panel)...
