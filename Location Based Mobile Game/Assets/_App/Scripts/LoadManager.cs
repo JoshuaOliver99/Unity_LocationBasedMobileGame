@@ -1,21 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+#if PLATFORM_ANDROID
+using UnityEngine.Android;
+#endif
 
+/// <summary>
+/// Location load manager to be attatched to the GameController GameObject of each location dependent 
+/// </summary>
 public class LoadManager : MonoBehaviour
 {
-    /// <summary> 
-    /// GameObjects to be enabled once LocationServices are connected
-    /// </summary>
-    [SerializeField] private List<GameObject> locationServiceDependent;
+    [SerializeField] [Tooltip("GameObjects to be enabled once LocationServices are connected")] List<GameObject> locationServiceDependent;
+    bool connected = false;
 
-    private bool connected = false;
-
-    private void Awake()
+    void Awake()
     {
+        #if PLATFORM_ANDROID
+        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+            Permission.RequestUserPermission(Permission.FineLocation);
+        #endif
+
         ManageIncorrectScene();
     }
 
-    private void Update()
+    void Update()
     {
         ManageLocationStatus();
     }
@@ -56,13 +63,6 @@ public class LoadManager : MonoBehaviour
     {   
         // Get the active scene
         UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-
-        // IF (Map, Interaction or Loading scene is not active)...
-        if (scene.name == "Map" || scene.name == "Interaction" || scene.name == "Loading")
-        { }
-        else
-            gameObject.GetComponent<LoadManager>().enabled = false; // Disable this gameobject
-
     }
 
 }

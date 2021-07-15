@@ -3,73 +3,91 @@ using UnityEngine;
 using UnityEngine.UI;
 using Google.Maps;
 using Google.Maps.Coord;
+using TMPro;
 
-public class  UIFunctions : MonoBehaviour
+/// <summary>
+/// A class to house general UI functions
+/// </summary>
+public class UIFunctions : MonoBehaviour
 {
+    [Header("Debug")]
+    [SerializeField]    TMP_Text DebugText;
+
     [Header("References")]
-    PlayerSaveData_SO playerSaveData;
-    CameraController cameraController;
-    PlayerActions playerActions;
-    [SerializeField] private MapsService MapsService;
+    [SerializeField]    MapsService MapsService;
+                        CameraController cameraController;
+                        PlayerSaveData_SO playerSaveData;
+                        PlayerActions playerActions;
 
 
     [Header("Property")]
-    List<PropertySaveData_SO> property;
+                        //List<PropertySaveData_SO> property;
+    [SerializeField]    float MaxPropertyRange = 20f;
 
-    // Test
+    // TEST
     // List of inrange property
-    List<PropertySaveData_SO> propertyInRange;
+                        List<PropertySaveData_SO> propertyInRange = new List<PropertySaveData_SO>();
 
 
     [Header("Phone")]
-    [SerializeField] private GameObject phone;
-    RectTransform phoneRectTransform;
-    bool retrievingPhone = false;
-    float lerpPercent = 0;
-    [SerializeField] float phoneSpeed;
-    [SerializeField] Vector3 phoneDownPos = new Vector3(0, -1700, 0);
+    [SerializeField]    GameObject phone;
+                        RectTransform phoneRectTransform;
+                        bool retrievingPhone = false;
+                        float lerpPercent = 0;
+    [SerializeField]    float phoneSpeed;
+    [SerializeField]    Vector3 phoneDownPos = new Vector3(0, -1700, 0);
 
-    GameObject homeScreen;
-    GameObject activeSceen;
+                        GameObject homeScreen;
+                        GameObject activeSceen;
 
     [Header("Movment")]
-    bool movingForward = false;
-    bool movingBack = false;
+                        bool movingForward = false;
+                        bool movingBack = false;
     
 
     void Start()
     {
         GetReferences();
-        SetData();
         ErrorHandling();
+        //SetData();
     }
 
     #region SETUP
     void GetReferences()
     {
+        // cameraController
         cameraController = GameObject.FindGameObjectWithTag("MainCamera").transform.GetComponentInParent<CameraController>();
-        playerActions = GameObject.FindGameObjectWithTag("GameController").transform.GetComponentInParent<PlayerActions>();
+        if (cameraController == null)
+            Debug.LogWarning("UIFunctions: cameraController > Find Tag 'MainCamera' failed.");
 
+        // playerActions
+        playerActions = GameObject.FindGameObjectWithTag("GameController").transform.GetComponentInParent<PlayerActions>();
+        if (playerActions == null)
+            Debug.LogWarning("UIFunctions: playerActions > Find Tag 'GameController' failed.");
+
+        // playerSaveData
         playerSaveData = Resources.Load<PlayerSaveData_SO>("PlayerData/Player");
-        property = playerSaveData.OwnedProperty;
+        if (cameraController == null)
+            Debug.LogWarning("UIFunctions: playerSaveData > Load 'Resources/PlayerData/Player' failed.");
+        //property = playerSaveData.OwnedProperty;
 
         // Phone
-        phoneRectTransform = phone.GetComponent<RectTransform>();
-        homeScreen = phone.transform.Find("HomeScreen").gameObject;
+        phone = GameObject.Find("Phone");
+        if (phone == null)
+            Debug.LogWarning("UIFunctions: phone > Find 'phone' failed.");
+        else
+        {
+            phoneRectTransform = phone.GetComponent<RectTransform>();  
+            homeScreen = phone.transform.Find("HomeScreen").gameObject;
+        }
     }
 
     void ErrorHandling()
     {
-        if (phone == null)
-            Debug.LogWarning(name + ": UIFuncations.cs: assigned phone can't be null");
         if (phoneSpeed <= 0)
             Debug.LogWarning(name + ": UIFuncations.cs: assigned phoneSpeed can't <= 0");
     }
 
-    void SetData()
-    {
-
-    }
     #endregion
 
 
@@ -116,36 +134,34 @@ public class  UIFunctions : MonoBehaviour
     public void Btn_LoadProperty()
     {
         propertyInRange.Clear();
-
+        
         // Players position
         LatLng playerLatLng = new LatLng(Input.location.lastData.latitude, Input.location.lastData.longitude);
-
+        
         foreach (PropertySaveData_SO property in playerSaveData.OwnedProperty)
         {
             // Property positon
             LatLng propertyLatLng = new LatLng(property.Latitude, property.longitude);
-
+            
             // Calculate the distance
-            Vector3 playerPos = new Vector3(MapsService.Projection.FromLatLngToVector3(playerLatLng).x, 0, MapsService.Projection.FromLatLngToVector3(playerLatLng).z);
-            Vector3 propertyPos = new Vector3(MapsService.Projection.FromLatLngToVector3(propertyLatLng).x, 0, MapsService.Projection.FromLatLngToVector3(propertyLatLng).z);
-
+            //OLD: Vector3 playerPos = new Vector3(MapsService.Projection.FromLatLngToVector3(playerLatLng).x, 0, MapsService.Projection.FromLatLngToVector3(playerLatLng).z);
+            //OLD: Vector3 propertyPos = new Vector3(MapsService.Projection.FromLatLngToVector3(propertyLatLng).x, 0, MapsService.Projection.FromLatLngToVector3(propertyLatLng).z);
+            Vector3 playerPos = MapsService.Projection.FromLatLngToVector3(playerLatLng);
+            Vector3 propertyPos = MapsService.Projection.FromLatLngToVector3(propertyLatLng);
             float GPSDistanceFromProperty = Vector3.Distance(playerPos, propertyPos);
 
-            // Calculate if it's in range
-            // NOTE: 20f should be changed
-            if (GPSDistanceFromProperty < 20f)
-            {
+            // Record in-range property
+            if (GPSDistanceFromProperty < MaxPropertyRange)
                 propertyInRange.Add(property);
-                Debug.LogError(property.name + " in range!");
-            }
         }
 
-        // TESTING
         // if (one property)...
         if(propertyInRange.Count == 1)
+            UnityEngine.SceneManagement.SceneManager.LoadScene(propertyInRange[0].SceneName); // Load it
+        else if (propertyInRange.Count > 1)
         {
-            // Load that property
-            UnityEngine.SceneManagement.SceneManager.LoadScene(propertyInRange[0].SceneName);
+            // TO DO:
+            // Show all avaliable properties
         }
 
 
@@ -159,6 +175,11 @@ public class  UIFunctions : MonoBehaviour
     public void Btn_LoadInteraction()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Interaction");
+    }
+
+    public void Btn_LoadOffline()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Offline");
     }
 
     public void Btn_Quit()

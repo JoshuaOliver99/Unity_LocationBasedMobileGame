@@ -6,7 +6,9 @@ using UnityEngine.UI;
 using Google.Maps;
 using Google.Maps.Coord;
 
-
+/// <summary>
+/// A Map scene UI script...
+/// </summary>
 public class ShowProperty : MonoBehaviour
 {
     [Header("References")]

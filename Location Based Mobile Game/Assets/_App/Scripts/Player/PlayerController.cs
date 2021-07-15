@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
 
     void SpawnCurrentPets()
     {
-        // foreach (current pet)
         foreach (AnimalSaveData_SO animalData in playerSaveData.CurrentPets)
         {
             // Spawn, set data, set name
