@@ -7,9 +7,9 @@ using UnityEngine;
 public class PlayerSaveData_SO : ScriptableObject
 {
     [Header("Data")]
-    [SerializeField] bool isFirstPlay = true;
-    [SerializeField] string firstPlayed; // UNUSED Date first played
-    [SerializeField] string lastPlayed; // UNUSED Date last played
+    public bool isFirstPlay = true;
+    public string firstPlayed; // UNUSED Date first played
+    public string lastPlayed; // UNUSED Date last played
 
     [Header("Property")]
     public List<PropertySaveData_SO> Allproperty; // NOTE: UNUSED, To hold a list of all owend property scene names
@@ -46,15 +46,7 @@ public class PlayerSaveData_SO : ScriptableObject
 
     void OnDisable()
     {
-        // Save the last time played
-        lastPlayed = System.DateTime.Now.ToString();
-
-        if (key == "")
-            key = name;
-
-        string jsonData = JsonUtility.ToJson(this, true);
-        PlayerPrefs.SetString(key, jsonData);
-        PlayerPrefs.Save();
+        Save();
     }
 
 
@@ -153,9 +145,38 @@ public class PlayerSaveData_SO : ScriptableObject
     }
     #endregion
 
+    public void ResetData()
+    {
+        Debug.Log("Resetting player data");
 
+        PlayerSaveData_SO playerReset = Resources.Load<PlayerSaveData_SO>("DefaultPlayerData/Player");
+        
+        isFirstPlay = true;
+        firstPlayed = "";
+        lastPlayed = "";
 
-     
+        Allproperty = playerReset.Allproperty;
+        OwnedProperty = playerReset.OwnedProperty;
+
+        AllAnimals = playerReset.AllAnimals;
+        CurrentPets = playerReset.CurrentPets;
+        previousPets = playerReset.previousPets;
+
+        Save();
+    }
+
+    public void Save()
+    {
+        // Save the last time played
+        lastPlayed = System.DateTime.Now.ToString();
+
+        if (key == "")
+            key = name;
+
+        string jsonData = JsonUtility.ToJson(this, true);
+        PlayerPrefs.SetString(key, jsonData);
+        PlayerPrefs.Save();
+    }
 
 
 }

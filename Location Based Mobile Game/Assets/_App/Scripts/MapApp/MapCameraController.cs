@@ -64,10 +64,10 @@ public class MapCameraController : MonoBehaviour
             // if (moving first touch)...
             if (Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                // enable return to player button
-
-
                 camRig.transform.position += new Vector3(Input.GetTouch(0).deltaPosition.x, 0, Input.GetTouch(0).deltaPosition.y) * moveSpeed;
+                
+                // enable a return to player button
+
             }
         }
     }

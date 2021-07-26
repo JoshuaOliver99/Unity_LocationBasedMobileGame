@@ -28,7 +28,7 @@ public class UIFunctions : MonoBehaviour
                         RectTransform phoneRectTransform;
                         bool retrievingPhone = false;
                         float lerpPercent = 0;
-    [SerializeField]    readonly float phoneSpeed;
+    [SerializeField]    float phoneSpeed = 3;
     [SerializeField]    Vector3 phoneDownPos = new Vector3(0, -1700, 0);
 
                         GameObject homeScreen;
@@ -87,7 +87,8 @@ public class UIFunctions : MonoBehaviour
     void Update()
     {
         MovePlayer();
-        UpdatePhonePos();
+        if (phone != null)
+            UpdatePhonePos();
     }
 
     void MovePlayer()
@@ -119,6 +120,29 @@ public class UIFunctions : MonoBehaviour
 
 
     #region Buttons
+    /// <summary>
+    ///  Reset game saved data
+    /// </summary>
+    public void Btn_ResetData()
+    {
+        PlayerSaveData_SO playerData = Resources.Load<PlayerSaveData_SO>("PlayerData/Player");
+        playerData.ResetData();
+
+        PropertySaveData_SO[] properties = Resources.LoadAll<PropertySaveData_SO>("PropertyData/");
+        for (int i = 0; i < properties.Length; i++)
+            properties[i].ResetData();
+        
+        AnimalSaveData_SO[] animals = Resources.LoadAll<AnimalSaveData_SO>("AnimalData/");
+        for (int i = 0; i < animals.Length; i++)
+            animals[i].ResetData();
+
+    }
+
+    public void Btn_LoadTitle()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+    }
+
     public void Btn_LoadMap()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Map");

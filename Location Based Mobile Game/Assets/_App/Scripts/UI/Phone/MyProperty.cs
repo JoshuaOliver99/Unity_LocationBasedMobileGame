@@ -9,8 +9,10 @@ using UnityEngine.UI;
 /// </summary>
 public class MyProperty : MonoBehaviour
 {
+    [Header("Debug")]
+    [SerializeField] TMP_Text debugText;
+
     [Header("References")]
-    // Links
     PlayerSaveData_SO playerSaveData;
     [SerializeField] GameObject PropertyPanelPrefab;
     List<GameObject> propertyRef = new List<GameObject>(); // Reference to instantiated properties
@@ -102,7 +104,9 @@ public class MyProperty : MonoBehaviour
     /// <param name="firstTime">If the property needs moving and button functions</param>
     void updatePropertyUI(PropertySaveData_SO property, bool firstTime)
     {
-        GameObject pPanel = GameObject.Find(property.name);
+        //debugText.text = ("updatePropertyUI");
+
+        GameObject pPanel = GameObject.Find(property.SceneName);
 
         // Set text
         pPanel.transform.Find("SceneName").GetComponent<TextMeshProUGUI>().text = property.SceneName;

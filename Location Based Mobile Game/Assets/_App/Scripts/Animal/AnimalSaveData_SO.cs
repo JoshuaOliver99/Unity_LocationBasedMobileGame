@@ -53,4 +53,34 @@ public class AnimalSaveData_SO : ScriptableObject
         PlayerPrefs.SetString(key, jsonData);
         PlayerPrefs.Save();
     }
+
+    public void ResetData()
+    {
+        Debug.LogError("AnimalSaveData_SO: ResetData() not yet implemented!");
+        //AnimalSaveData_SO[] allAnimal = Resources.LoadAll<AnimalSaveData_SO>("DefaultAnimalData/");
+        //AnimalSaveData_SO animalReset = null;
+        //
+        //foreach (AnimalSaveData_SO a in allAnimal)
+        //    if (p.SceneName == SceneName)
+        //        propertyReset = p;
+        //
+        //if (propertyReset != null)
+        //{
+        //    PropertyName = propertyReset.PropertyName;
+        //    IsOwned = propertyReset.IsOwned;
+        //    previouslyOwned = propertyReset.previouslyOwned;
+        //    purchasePrice = propertyReset.purchasePrice;
+        //    sellPrice = propertyReset.sellPrice;
+        //    Latitude = propertyReset.Latitude;
+        //    longitude = propertyReset.longitude;
+        //    RemainingMoves = propertyReset.RemainingMoves;
+        //}
+
+        // Save();
+    }
+
+    public void Save()
+    {
+
+    }
 }

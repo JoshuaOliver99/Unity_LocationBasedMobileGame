@@ -39,11 +39,40 @@ public class PropertySaveData_SO : ScriptableObject
 
     void OnDisable()
     {
+        Save();
+    }
+
+    public void Save()
+    {
         if (key == "")
             key = name;
 
         string jsonData = JsonUtility.ToJson(this, true);
         PlayerPrefs.SetString(key, jsonData);
         PlayerPrefs.Save();
+    }
+
+    public void ResetData()
+    {
+        PropertySaveData_SO[] allProperty = Resources.LoadAll<PropertySaveData_SO>("DefaultPropertyData/");
+        PropertySaveData_SO propertyReset = null;
+
+        foreach (PropertySaveData_SO p in allProperty)
+            if (p.SceneName == SceneName)
+                propertyReset = p;
+
+        if (propertyReset != null)
+        {
+            PropertyName = propertyReset.PropertyName;
+            IsOwned = propertyReset.IsOwned;
+            previouslyOwned = propertyReset.previouslyOwned;
+            purchasePrice = propertyReset.purchasePrice;
+            sellPrice = propertyReset.sellPrice;
+            Latitude = propertyReset.Latitude;
+            longitude = propertyReset.longitude;
+            RemainingMoves = propertyReset.RemainingMoves;
+        }
+
+        Save();
     }
 }
