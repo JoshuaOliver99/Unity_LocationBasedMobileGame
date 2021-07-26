@@ -17,10 +17,12 @@ public class PropertySaveData_SO : ScriptableObject
     [SerializeField] float purchasePrice;
     [SerializeField] float sellPrice;
 
-    // NOTE: For intended inventory class
+    // NOTE: For intended inventory class maybe
     //[Header("Inventory")]
-    // Inventory_SO inventory;
-    // Inventory_SO deployedItems;
+    //Inventory_SO inventory;
+    //Inventory_SO deployedItems;
+    // OR
+    //Dictionary of inventoryItem.cs with index being inventory positon
 
     [Header("Location")]
     public double Latitude;

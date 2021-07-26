@@ -11,7 +11,7 @@ using TMPro;
 public class UIFunctions : MonoBehaviour
 {
     [Header("Debug")]
-    [SerializeField]    TMP_Text DebugText;
+    [SerializeField]    TMP_Text DebugText; // For easier mobile testing
 
     [Header("References")]
     [SerializeField]    MapsService MapsService;
@@ -19,22 +19,16 @@ public class UIFunctions : MonoBehaviour
                         PlayerSaveData_SO playerSaveData;
                         PlayerActions playerActions;
 
-
     [Header("Property")]
-                        //List<PropertySaveData_SO> property;
     [SerializeField]    float MaxPropertyRange = 20f;
-
-    // TEST
-    // List of inrange property
                         List<PropertySaveData_SO> propertyInRange = new List<PropertySaveData_SO>();
-
 
     [Header("Phone")]
     [SerializeField]    GameObject phone;
                         RectTransform phoneRectTransform;
                         bool retrievingPhone = false;
                         float lerpPercent = 0;
-    [SerializeField]    float phoneSpeed;
+    [SerializeField]    readonly float phoneSpeed;
     [SerializeField]    Vector3 phoneDownPos = new Vector3(0, -1700, 0);
 
                         GameObject homeScreen;
@@ -49,7 +43,6 @@ public class UIFunctions : MonoBehaviour
     {
         GetReferences();
         ErrorHandling();
-        //SetData();
     }
 
     #region SETUP
@@ -107,7 +100,7 @@ public class UIFunctions : MonoBehaviour
 
     void UpdatePhonePos()
     {
-        // Note:
+        // NOTE:
         // lerpPercent should be clamped (0, 1),
         // but it still works because Lerp functions from 0 to 1
 

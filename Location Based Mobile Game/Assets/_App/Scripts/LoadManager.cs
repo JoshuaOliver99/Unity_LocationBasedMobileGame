@@ -9,7 +9,8 @@ using UnityEngine.Android;
 /// </summary>
 public class LoadManager : MonoBehaviour
 {
-    [SerializeField] [Tooltip("GameObjects to be enabled once LocationServices are connected")] List<GameObject> locationServiceDependent;
+    [SerializeField] [Tooltip("GameObjects to be enabled once LocationServices are connected")] 
+    List<GameObject> locationServiceDependent;
     bool connected = false;
 
     void Awake()
@@ -30,7 +31,7 @@ public class LoadManager : MonoBehaviour
     /// <summary>
     /// Test location service status, and act appropriately
     /// </summary>
-    private void ManageLocationStatus()
+    void ManageLocationStatus()
     {
         // If (Location service is running)...
         if (Input.location.status == LocationServiceStatus.Running && !connected)
@@ -59,7 +60,7 @@ public class LoadManager : MonoBehaviour
     /// <summary>
     /// Disables this component if on the incorrect scene
     /// </summary>
-    private void ManageIncorrectScene()
+    void ManageIncorrectScene()
     {   
         // Get the active scene
         UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();

@@ -4,6 +4,9 @@ using UnityEngine;
 
 /// <summary>
 /// Camera Controller to be attatched to the camera base GameObject (Camera parent).
+/// 
+/// NOTE: poor implementation, make camera to a child and only call rotate when the
+/// 
 /// </summary>
 public class CameraController : MonoBehaviour
 {

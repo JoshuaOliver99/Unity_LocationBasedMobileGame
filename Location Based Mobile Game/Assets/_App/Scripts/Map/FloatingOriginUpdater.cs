@@ -204,7 +204,7 @@ namespace Maps.Shared
         void OnDisable()
         {
             // NOTE: TEMP DISABLED
-            // CameraController.OnMove.RemoveListener(TryMoveFloatingOrigin);
+             // CameraController.OnMove.RemoveListener(TryMoveFloatingOrigin);
         }
 
         /// <summary>

@@ -866,8 +866,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 972.25}
-  m_SizeDelta: {x: 1240, y: 100}
+  m_AnchoredPosition: {x: 0, y: -401}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1075586350
 MonoBehaviour:
@@ -1486,8 +1486,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 972.25}
-  m_SizeDelta: {x: 1240, y: 100}
+  m_AnchoredPosition: {x: 0, y: -401}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1588729705
 MonoBehaviour:
@@ -1657,7 +1657,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Location Status Here...
+  m_Text: '[Connection Status]'
 --- !u!222 &1647107799
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2132,7 +2132,6 @@ MonoBehaviour:
   MapsService: {fileID: 0}
   MaxPropertyRange: 20
   phone: {fileID: 0}
-  phoneSpeed: 0
   phoneDownPos: {x: 0, y: -1700, z: 0}
 --- !u!1 &2110864313
 GameObject:

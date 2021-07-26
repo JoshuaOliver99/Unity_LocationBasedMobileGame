@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15772cb3cee3e794295e1a387a0da813, type: 3}
-  m_Name: Terraced
+  m_Name: BasicStreet
   m_EditorClassIdentifier: 
-  SceneName: Terraced
-  PropertyName: Test House
+  SceneName: BasicStreet
+  PropertyName: 1 Basic street
   IsOwned: 1
   previouslyOwned: 0
   purchasePrice: 20
   sellPrice: 19
-  Latitude: 0
-  longitude: 23.33434295654297
-  RemainingMoves: 1000
+  Latitude: 11
+  longitude: 33
+  RemainingMoves: 995
   key: Terraced

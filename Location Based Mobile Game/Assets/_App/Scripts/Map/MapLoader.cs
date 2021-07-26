@@ -27,15 +27,11 @@ namespace Maps.Shared
     /// </summary>
     public class MapLoader : MonoBehaviour
     {
-        #region TESTING
-        /// <summary>
-        /// DEBUG values used purely for testing.
-        /// </summary>
-        //[Header("DEBUG"), Tooltip("Debug stats to use if location services not connected.")]
-        //public bool DesktopDebug = false;
-        //public double Latitude;
-        //public double Longitue;
-        #endregion
+        [Header("DEBUG = tor manual location.")]
+        public bool DesktopDebug = false;
+        public double Latitude;
+        public double Longitue;
+        
 
 
 
@@ -108,12 +104,7 @@ namespace Maps.Shared
         /// </summary>
         void Start()
         {
-            #region TESTING
-            // Set the latitude and longitude
-            LatLng =  new LatLng (Input.location.lastData.latitude, Input.location.lastData.longitude);
-            #endregion
-
-
+            initLatLng();
             InitFloatingOrigin();
             InitStylingOptions();
             InitEventListeners();
@@ -130,6 +121,17 @@ namespace Maps.Shared
         void OnApplicationQuit()
         {
             HasQuit = true;
+        }
+
+        /// <summary>
+        /// Init LatLng dependant on build  
+        /// </summary>
+        void initLatLng()
+        {
+            if (DesktopDebug)
+                LatLng = new LatLng(Latitude, Longitue);
+            else
+                LatLng = new LatLng(Input.location.lastData.latitude, Input.location.lastData.longitude);
         }
 
         /// <summary>
